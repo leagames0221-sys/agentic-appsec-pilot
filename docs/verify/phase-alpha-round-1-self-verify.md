@@ -10,7 +10,7 @@
 ## Anchor
 
 - **Repo**: `C:\Users\admin\Projects\agentic-appsec-pilot\` (PRIVATE)
-- **HEAD**: `<filled at commit time>`
+- **HEAD anchor**: `781430c` (post-fix commit) — re-verify reproducible by running the literal commands per criterion on this or newer HEAD.
 - **Verify date**: 2026-05-21
 - **Rubric source**: `docs/verify/phase-alpha-rubric.md`
 
