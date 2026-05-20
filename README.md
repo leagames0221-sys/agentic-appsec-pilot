@@ -1,6 +1,12 @@
 # agentic-appsec-pilot
 
-> ⚠ **Pre-public draft (Stage 1 Foundation)**. PRIVATE repo until ★★★ verdict gate via independent reviewer + user explicit promotion. PUBLIC flip criteria: `docs/adr/0006-public-flip-criteria.md` (to be drafted in Stage 8).
+[![ci](https://github.com/leagames0221-sys/agentic-appsec-pilot/actions/workflows/ci.yml/badge.svg)](https://github.com/leagames0221-sys/agentic-appsec-pilot/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/leagames0221-sys/agentic-appsec-pilot/actions/workflows/codeql.yml/badge.svg)](https://github.com/leagames0221-sys/agentic-appsec-pilot/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/leagames0221-sys/agentic-appsec-pilot/badge)](https://scorecard.dev/viewer/?uri=github.com/leagames0221-sys/agentic-appsec-pilot)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node: 20+](https://img.shields.io/badge/Node-20+-brightgreen.svg)](https://nodejs.org/)
+
+> ⚠ **Pre-public draft (Stages 1-7 in progress)**. PRIVATE repo until ★★★ verdict gate via independent reviewer + user explicit promotion. PUBLIC flip criteria: `docs/adr/0006-public-flip-criteria.md` (Stage 8).
 
 Local-first AI-agent harness for defensive AppSec on TS/JS/Python codebases.
 
