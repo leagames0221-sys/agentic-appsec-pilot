@@ -4,18 +4,23 @@
 
 ## Current stage
 
-**Stage 1: Foundation** (in progress、 2026-05-20 着手)
+**Stage 9: Round 1 self-audit clean, independent CONFIRM PENDING** (2026-05-21 pause)
 
-- ✅ Stage 0 lock complete (handoff supersede 起草 + W1 5-axis wedge narrative literal 精緻化 + ADR-0002 / ADR-0007 draft、 詳細 = internal SSoT 参照)
-- 🔄 Stage 1: directory + git init + 配置 + opacity hook fire test + user 客観評価 round
-- ⏳ Stage 2: IR design (threat-model + finding + evidence-trail schema)
+- ✅ Stage 1-8 complete (Foundation + IR + STRIDE-GPT decomposed + LLM providers + vuln-identify + patch-suggest + emitters + CLI + CI + ADR + benchmark)
+- ✅ Stage 9 Round 1 writer self-audit: 7/7 PASS at commit `ee6d41f`
+- ⏸ Stage 9 independent reviewer (tier-reviewer subagent) BLOCKED on API 529 Overloaded x3 on 2026-05-21
+- ⏳ Stage 9 resume = retry tier-reviewer subagent on service recovery (see `docs/verify/round-1-self-audit.md` §Resume protocol)
+- ⏳ Stage 10 ★★★ verdict gate = independent 2-round CONFIRM
+- ⏳ Stage 11 PUBLIC flip = user explicit promotion gate per ADR-0006 C6
 
 ## Next session resume (cold start protocol)
 
 1. cwd = `C:\Users\admin\Projects\agentic-appsec-pilot\`
-2. Read: `CLAUDE.md` + `docs/spec.md` + 本 file
-3. Read Stage 0 lock SSoT = internal SSoT 参照 (handoff supersede memory、 2026-05-20)
-4. user 確認 = Stage 2 IR design 着手 OK か
+2. Read: `CLAUDE.md` + `docs/spec.md` + `docs/verify/round-1-self-audit.md` + 本 file
+3. Re-verify no regression: `pnpm run test:coverage` + `pnpm run lint:deps` + `pnpm audit --audit-level=high`
+4. Invoke `tier-reviewer` subagent with rubric path `docs/verify/phase-alpha-rubric.md` + anchor commit (current HEAD)
+5. If service recovered: Round 1 → Writer self-audit → Round 2 → user verdict report
+6. If service still 529: pause again + try next session
 
 ## Critical context
 
