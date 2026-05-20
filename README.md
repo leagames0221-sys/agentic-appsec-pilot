@@ -8,7 +8,9 @@
 
 > ⚠ **Pre-public draft (Phase α writer self-verify clean, awaiting promotion gate).** PRIVATE repo until user-explicit promotion. PUBLIC flip criteria: `docs/adr/0006-public-flip-criteria.md`.
 
-Local-first AI-agent harness for defensive AppSec on TS/JS/Python codebases.
+**In plain words**: this is a command-line tool that reads your TypeScript / JavaScript / Python source code, asks a small AI model (running on your own laptop, no cloud bill) to look for security problems, and writes back not just the problem list but a draft fix you can review. It costs **$0/month** by default, needs **no API key**, and runs **offline** once you have the local model installed.
+
+**For engineers**: Local-first AI-agent harness for defensive AppSec on TS/JS/Python codebases — threat modeling (STRIDE + OWASP LLM Top 10) + SAST (OpenGrep + Bandit) + SCA (OSV-Scanner) + LLM-driven false-positive triage + patch suggestion, emitting SARIF 2.1.0 + CycloneDX VEX. Default LLM provider is Ollama `gemma3:4b` (~3.8 GB local), optional `--use-claude-code` flag spawns your own `claude` CLI.
 
 ## What it does
 
@@ -38,6 +40,25 @@ Daybreak-style OSS replicas don't yet cover the intersection of all five:
 - Awaiting user-explicit promotion gate for PUBLIC flip per [`docs/adr/0006-public-flip-criteria.md`](docs/adr/0006-public-flip-criteria.md)
 - Spec status: Stage 1 Discovery + Stage 2 EARS Acceptance Criteria complete ([`docs/spec.md`](docs/spec.md))
 - Phase β (sandboxed exploit lab) ships as a separate repo `agentic-appsec-exploit-lab` and is out of scope here
+
+## Tech stack
+
+| Layer | Choice | Why |
+|---|---|---|
+| Runtime | Node.js 20 LTS + pnpm 10+ | npm-ecosystem standard, free-tier CI compatible |
+| Language | TypeScript (strict, ESM) | type safety, single-binary compile via `tsc` |
+| CLI framework | commander + did-you-mean | minimal deps, sysexits-compliant exit codes |
+| Schema validation | zod + ajv (+ ajv-formats) | runtime + JSON Schema validators for SARIF / VEX / threat-model |
+| Test runner | vitest (ESM native) | 64/64 PASS on 3-OS CI |
+| LLM (default) | Ollama `gemma3:4b` (~3.8 GB) | local, $0/month, no credit card, no network egress |
+| LLM (optional) | `claude-code` CLI spawn | uses your own Claude Code subscription; this tool holds no API key |
+| SAST | OpenGrep (LGPL-2.1) + Bandit (Apache-2.0) | TS/JS via OpenGrep, Python via Bandit, both free-tier |
+| SCA | OSV-Scanner (Apache-2.0) | Google OSV.dev database, no cloud key required |
+| Output formats | SARIF 2.1.0 + CycloneDX VEX | tool-vendor neutral standards |
+| Threat-model prompts | STRIDE-GPT decomposed (MIT) | ADR-0002 — prompt templates ported, no Python runtime dep |
+| CI | GitHub Actions 3-OS matrix (Ubuntu/macOS/Windows) | free tier, no payment required |
+
+Full rationale per dependency: [`docs/adr/`](docs/adr/) (8 ADRs, all Accepted).
 
 ## Install
 
@@ -86,6 +107,67 @@ All three commands default to `--provider mock` (deterministic, no LLM call, no 
 **First-run behavior with no scanners installed**: `scan` gracefully degrades — if OpenGrep / Bandit / OSV-Scanner are absent from `PATH`, it logs `tool status: ...=not-installed` on stderr and emits an empty `findings: []` SARIF (exit code 0). This is by design (the CLI never crashes on missing optional tooling); install at least one scanner from the **Install** section above for actual output.
 
 **Cost contract**: this tool holds no API key and makes no paid-API direct calls (see ADR-0007). `--use-claude-code` spawns your locally-installed `claude` CLI, which uses your own Claude Code subscription — billing flows through your existing Anthropic account, not through this tool. `--provider ollama` and `--provider mock` are fully offline and free.
+
+## Demo — what running it actually looks like
+
+The captures below are reproducible from a fresh clone: run the literal commands and you will get byte-similar output (timestamps and UUIDs differ). The literal files live under [`docs/demo/`](docs/demo/) so a reviewer can diff against their own run.
+
+**`agentic-appsec --help`** ([`docs/demo/help.txt`](docs/demo/help.txt)):
+
+```
+Usage: agentic-appsec [options] [command]
+
+Local-first AI-agent harness for defensive AppSec on TS/JS/Python codebases.
+Threat-model + SAST/SCA + patch-suggestion + SARIF 2.1.0, runs on Ollama by
+default.
+
+Commands:
+  threat-model [options] <repo>  Generate STRIDE + OWASP LLM/ASI threat model
+                                 for a repo.
+  scan [options] <repo>          Run OpenGrep + Bandit + OSV-Scanner, emit SARIF
+                                 2.1.0 + optional CycloneDX VEX.
+  patch [options] <sarif-path>   Generate patch suggestion for a finding in a
+                                 SARIF file.
+```
+
+**Threat-model output** ([`docs/demo/sample-threat-model.json`](docs/demo/sample-threat-model.json), `--provider mock` against an empty repo — used here to show the schema; with `--provider ollama` against a real repo, the `threats` array contains STRIDE-classified findings):
+
+```json
+{
+  "schemaVersion": "1.0.0",
+  "id": "tm-<uuid>",
+  "target": "<repo path>",
+  "generatedAt": "<ISO-8601 timestamp>",
+  "threats": [],
+  "improvementSuggestions": [
+    "Provider \"mock\" did not return parseable JSON. Switch to ollama or claude-code-cli for real output."
+  ]
+}
+```
+
+**SARIF 2.1.0 scan output** ([`docs/demo/sample-scan.sarif`](docs/demo/sample-scan.sarif), validates against the OASIS SARIF JSON Schema referenced via `$schema`):
+
+```json
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "agentic-appsec-pilot",
+          "version": "0.1.0",
+          "informationUri": "https://github.com/leagames0221-sys/agentic-appsec-pilot",
+          "rules": []
+        }
+      },
+      "results": []
+    }
+  ]
+}
+```
+
+A terminal-recording screenshot (PNG / asciinema cast) of an end-to-end run against a known-vulnerable fixture repo will be added once the user-explicit PUBLIC promotion gate is cleared; the textual captures above are the in-repo verifiable baseline.
 
 ## Portfolio constraint vs customer deployment
 
