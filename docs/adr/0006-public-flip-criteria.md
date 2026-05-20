@@ -122,5 +122,5 @@ any condition is forbidden.**
 ## References
 
 - sbom-pilot ★★★ verdict precedent (internal SSoT, 2026-05-20)
-- `~/.claude/agents/tier-reviewer.md` (subagent definition)
+- independent reviewer subagent (internal definition, not committed)
 - closure-bias detection rationale (internal `INFO_GOVERNANCE.md` §5.2)
