@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "tm-2026-05-20-001",
+  "target": "github.com/example/sample-app@abc123",
+  "generatedAt": "2026-05-20T12:34:56Z",
+  "threats": [
+    {
+      "id": "T-001",
+      "category": "InformationDisclosure",
+      "scenario": "User input is reflected in HTML response without sanitization, allowing XSS attacker to exfiltrate session cookies",
+      "potentialImpact": "Confidentiality breach: session hijack of authenticated users; data exfiltration via cookie theft",
+      "owaspLlm": "LLM02"
+    },
+    {
+      "id": "T-002",
+      "category": "ElevationOfPrivilege",
+      "scenario": "JWT verification skips signature check on tokens with 'alg: none' header",
+      "potentialImpact": "Authentication bypass: attacker forges admin tokens, full account takeover"
+    }
+  ],
+  "improvementSuggestions": [
+    "Adopt CSP with strict-dynamic + nonce-based script-src",
+    "Pin JWT library version supporting RFC 8725 (reject 'alg: none')"
+  ]
+}

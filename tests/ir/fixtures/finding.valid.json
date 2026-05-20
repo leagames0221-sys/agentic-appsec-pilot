@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "F-01J8XYZ-0001",
+  "ruleId": "javascript.lang.security.audit.xss.reflected-input",
+  "severity": "high",
+  "confidence": "★★★",
+  "probability": 0.92,
+  "evidenceTrail": [
+    {
+      "type": "pattern",
+      "citation": "src/handlers/profile.js:42",
+      "capturedAt": "2026-05-20T12:30:00Z",
+      "weight": 0.5,
+      "rationale": "OpenGrep rule match: req.query.name flowing to res.send() without escape"
+    },
+    {
+      "type": "source",
+      "citation": "src/handlers/profile.js:42:res.send(`<h1>Hello ${req.query.name}</h1>`)",
+      "capturedAt": "2026-05-20T12:30:01Z",
+      "weight": 0.3
+    },
+    {
+      "type": "llm_judgment",
+      "citation": "ollama:gemma3:4b@p-stride-xss-confirm-v1",
+      "capturedAt": "2026-05-20T12:31:00Z",
+      "weight": 0.2,
+      "rationale": "LLM confirmed: req.query.name is user-controlled, no escape/encoding observed in code path"
+    }
+  ],
+  "sourceUrlLine": "src/handlers/profile.js:42",
+  "message": "Reflected XSS: untrusted user input from req.query.name embedded in HTML response without sanitization",
+  "sarifLocation": {
+    "artifactLocation": { "uri": "src/handlers/profile.js" },
+    "region": {
+      "startLine": 42,
+      "startColumn": 3,
+      "endLine": 42,
+      "endColumn": 58
+    }
+  }
+}

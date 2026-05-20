@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "F-bad-002",
+  "ruleId": "javascript.lang.security.audit.xss.reflected-input",
+  "severity": "high",
+  "confidence": "★★★",
+  "probability": 1.5,
+  "evidenceTrail": [
+    {
+      "type": "pattern",
+      "citation": "src/x.js:1",
+      "capturedAt": "2026-05-20T12:30:00Z"
+    }
+  ],
+  "sourceUrlLine": "src/x.js:1",
+  "message": "Bad finding for negative test",
+  "sarifLocation": {
+    "artifactLocation": { "uri": "src/x.js" },
+    "region": { "startLine": 1 }
+  }
+}
