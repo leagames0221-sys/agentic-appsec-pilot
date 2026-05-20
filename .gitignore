@@ -49,6 +49,11 @@ agentic-output/
 threat-models/
 findings-cache/
 
+# Scoped exception: mock-only demo artifacts under docs/demo/ are
+# committed so reviewers can diff a fresh run against the reference.
+!docs/demo/sample-*.sarif
+!docs/demo/sample-*.vex.json
+
 # Local-only internal notes (channel B mask list, never commit)
 .claude/internal_notes.md
 .claude/settings.local.json
