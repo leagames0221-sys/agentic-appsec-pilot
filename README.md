@@ -36,9 +36,55 @@ Daybreak-style OSS replicas don't yet cover the intersection of all five:
 - Stage 2 IR → Stage 11 PUBLIC flip not yet started
 - See `docs/spec.md` for Stage 1 Discovery + EARS requirements
 
+## Install
+
+Requirements: **Node.js 20+**, **pnpm 10+**, optional **Ollama** (local LLM, $0/month).
+
+```bash
+git clone https://github.com/leagames0221-sys/agentic-appsec-pilot.git
+cd agentic-appsec-pilot
+pnpm install
+pnpm run build      # compiles to dist/
+node dist/cli/index.js --help
+```
+
+For full scan + enrichment, also install:
+
+- **Ollama** (Windows 10+): https://ollama.com/download/windows — then `ollama pull gemma3:4b`
+- **OpenGrep** (TS/JS/Python SAST): https://github.com/opengrep/opengrep/releases
+- **Bandit** (Python SAST): `pip install bandit`
+- **OSV-Scanner** (SCA): https://github.com/google/osv-scanner/releases
+
+## Quickstart
+
+```bash
+# Stage 1: generate STRIDE + OWASP LLM/ASI threat model
+agentic-appsec threat-model ./my-repo \
+  --app-type "Generative AI application" \
+  --provider ollama \
+  --output threat-model.json
+
+# Stage 2: SAST + SCA scan with LLM enrichment, emit SARIF + VEX
+agentic-appsec scan ./my-repo \
+  --provider ollama \
+  --enrich \
+  --output findings.sarif \
+  --vex findings.vex.json
+
+# Stage 4: patch suggestion (uses your own Claude Code subscription)
+agentic-appsec patch findings.sarif \
+  --repo ./my-repo \
+  --use-claude-code \
+  --output patch-suggestion.json
+```
+
+All three commands default to `--provider mock` (deterministic, no LLM call, no network egress). Set `--provider ollama` for local-LLM enrichment, or `--use-claude-code` to call your existing Claude Code subscription via the CLI.
+
+**Cost contract**: paid LLM API direct calls are literal banned (see ADR-0007). `--use-claude-code` uses your own Claude Code subscription via the `claude` CLI; the tool itself holds no API key.
+
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). Third-party attribution: [LICENSE-third-party.md](LICENSE-third-party.md).
 
 ## Acknowledgements
 
