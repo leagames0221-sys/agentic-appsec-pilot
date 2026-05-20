@@ -66,7 +66,7 @@ export interface ThreatEntry {
 export type Severity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 
 /**
- * Confidence marker — D9-CalibratedHonesty literal:
+ * Confidence marker — calibrated-honesty principle:
  *   '★★★' = high confidence (multiple independent evidence)
  *   '★★'  = medium confidence (single strong evidence)
  *   '★'   = low confidence (heuristic match, LLM-only judgment)
@@ -87,7 +87,7 @@ export interface Finding {
   probability: number;
   /** W3 wedge: ordered evidence trail, weighted */
   evidenceTrail: EvidenceTrail[];
-  /** D8-CitationRequired: literal source citation (file:line or URL) */
+  /** Citation-required principle: literal source citation (file:line or URL) */
   sourceUrlLine: string;
   /** Human-readable explanation */
   message: string;
