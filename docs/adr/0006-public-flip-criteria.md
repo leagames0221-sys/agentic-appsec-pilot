@@ -102,9 +102,9 @@ any condition is forbidden.**
 2. **Sibling tool pattern**: `sbom-pilot` shipped via 2-round CONFIRM +
    user-requested 3rd round audit + user explicit gate (commit
    f7d8296). Same pattern literal repeated here.
-3. **D8-CitationRequired**: verdict claims require source paths.
+3. **Citation-required principle**: verdict claims require source paths.
    Reviewer reads literal files, not summaries.
-4. **D9-CalibratedHonesty**: ★★★ marker is a contract. If any criterion
+4. **Calibrated-honesty principle**: ★★★ marker is a contract. If any criterion
    fails, the verdict is ★★ or below.
 
 ## Consequences

@@ -36,9 +36,9 @@ adopted, even as an optional path.
 3. **OSV.dev as source of truth**: GHSA + NVD + ecosystem feeds are
    aggregated into a single normalised JSON schema, with explicit affected
    version ranges. Trivy's database is a separate snapshot.
-4. **D-SINGLE-ROUTE compliance**: handoff supersede note (Stage 0 lock,
+4. **single-best-route principle compliance**: handoff supersede note (Stage 0 lock,
    2026-05-20) identified "Trivy or OSV-Scanner" two-way choice as a
-   D-SINGLE-ROUTE violation. Trivy is literal not in scope.
+   single-best-route principle violation. Trivy is literal not in scope.
 5. **Single binary, single output schema**: Trivy emits a more complex
    nested-result structure; OSV-Scanner's results[] / packages[] /
    vulnerabilities[] triple is straightforward to parse.
