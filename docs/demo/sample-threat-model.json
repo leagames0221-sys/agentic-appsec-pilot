@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "tm-cb95a398-7587-4e2d-9e84-2eb69d3da031",
+  "target": "C:/Users/admin/AppData/Local/Temp/smoke-test",
+  "generatedAt": "2026-05-20T20:32:21Z",
+  "threats": [],
+  "improvementSuggestions": [
+    "Provider \"mock\" did not return parseable JSON. Switch to ollama or claude-code-cli for real output."
+  ]
+}
