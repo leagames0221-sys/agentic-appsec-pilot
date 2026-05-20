@@ -1,5 +1,14 @@
 # Phase α — Round 1 self-audit (writer self-check, NOT independent reviewer)
 
+> ⚠ **SUPERSEDED 2026-05-21 by `phase-alpha-round-1-self-verify.md`.**
+> The C7 PASS claim in this document was based on an **incomplete
+> scan**: 2 forbidden-token hits in `docs/adr/0001-prior-art-audit.md:9`
+> and `docs/adr/0002-stride-gpt-decomposed.md:22` were missed. The
+> superseding document re-runs the full canonical scan post-fix and
+> records the corrected verdict. Reviewer subagent is sealed by user
+> directive 2026-05-21; writer self-verify is the current default
+> verification path.
+
 > ⚠ This document records the **writer self-audit** state at commit
 > `ee6d41f`. Per ADR-0006 C5, the ★★★ verdict gate requires an
 > **independent reviewer fresh-context CONFIRM** (tier-reviewer
