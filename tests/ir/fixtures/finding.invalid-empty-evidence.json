@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "F-bad-003",
+  "ruleId": "x.y.z",
+  "severity": "low",
+  "confidence": "?",
+  "probability": 0.1,
+  "evidenceTrail": [],
+  "sourceUrlLine": "src/x.js:1",
+  "message": "Empty evidence trail must fail (W3 wedge requires citation)",
+  "sarifLocation": {
+    "artifactLocation": { "uri": "src/x.js" },
+    "region": { "startLine": 1 }
+  }
+}

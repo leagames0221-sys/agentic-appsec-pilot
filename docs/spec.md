@@ -41,29 +41,108 @@ Stage ③ exploit sandbox = Phase β `agentic-appsec-exploit-lab` 別 repo (kern
 
 詳細 = `docs/adr/0001-prior-art-audit.md` §wedge-articulation。
 
-## Stage 2 — Requirements (EARS、 Stage 2 着手時 literal 育成)
+## Stage 2 — Requirements (EARS Acceptance Criteria、 育成済 2026-05-20)
 
-### REQ-001 (Stage ① Threat Model): WHEN user invokes `agentic-appsec threat-model <repo>` THEN the system SHALL emit STRIDE + OWASP LLM/ASI mapping YAML/JSON to stdout or `--output` file path.
+### REQ-001 (Stage ① Threat Model)
 
-### REQ-002 (Stage ② Vuln Identify): WHEN user invokes `agentic-appsec scan <repo>` THEN the system SHALL run OpenGrep + Bandit + OSV-Scanner, dedupe findings via file:line + rule_id mapping, and emit SARIF 2.1.0 to stdout or `--output` file path.
+**WHEN** user invokes `agentic-appsec threat-model <repo>`
+**THEN** the system SHALL emit STRIDE + OWASP LLM/ASI mapping JSON to stdout or `--output` file path.
 
-### REQ-003 (Stage ② LLM enrich): WHEN `--enrich` flag is set AND Ollama or claude-code provider is available THEN the system SHALL produce 3 enrichment outputs per finding: (a) false-positive triage verdict, (b) severity re-rank, (c) exploit context explanation.
+- **AC-001-1**: Output JSON validates against `ThreatModel` schema (`src/ir/schema.ts:threatModelSchema`) — `validateThreatModel(output)` does not throw
+- **AC-001-2**: Output `threats[]` length ≥ 1 for any non-trivial repo (≥ 100 source files)
+- **AC-001-3**: Each ThreatEntry has `category ∈ {STRIDE 6 値}` literal
+- **AC-001-4**: When repo is a GenAI app, ≥ 1 threat has `owaspLlm ∈ {LLM01..LLM10}`
+- **AC-001-5**: Latency ≤ 60 s for a 1k-file repo on consumer laptop (Ollama gemma3:4b)
 
-### REQ-004 (Stage ④ Patch suggest): WHEN user invokes `agentic-appsec patch <finding-id>` THEN the system SHALL generate a patch candidate via LLM AND re-run the relevant SAST tool on the patched file to validate the finding no longer triggers.
+### REQ-002 (Stage ② Vuln Identify)
 
-### REQ-005 (Confidence schema): WHEN a finding is emitted THEN the system SHALL include `properties.confidence` (★★★/★★/★/?), `properties.probability` (0.0-1.0), and `properties.evidence_trail` (array of citations) in the SARIF 2.1.0 result.
+**WHEN** user invokes `agentic-appsec scan <repo>`
+**THEN** the system SHALL run OpenGrep + Bandit + OSV-Scanner, dedupe findings, and emit SARIF 2.1.0.
 
-### REQ-006 (Local-first): WHEN no LLM provider env-var is set AND no `--use-claude-code` flag is given THEN the system SHALL run Ollama-default or mock fallback, never invoke paid API.
+- **AC-002-1**: Output validates against SARIF 2.1.0 OASIS schema literal
+- **AC-002-2**: Findings deduped via `(artifactLocation.uri, region.startLine, ruleId)` triple (no duplicates after correlator)
+- **AC-002-3**: Each Finding validates against `findingSchema` (`src/ir/schema.ts`)
+- **AC-002-4**: Throughput ≥ 100 findings / minute on 1k-file fixture repo
+- **AC-002-5**: SAST findings (OpenGrep + Bandit) AND SCA findings (OSV-Scanner) both present when applicable
 
-### REQ-007 (Offline mode): WHEN `--offline` flag is set THEN the system SHALL operate with network egress ZERO (Ollama local + cached OSV.dev database snapshot).
+### REQ-003 (Stage ② LLM enrich)
 
-### REQ-008 (Exit codes): The system SHALL conform to sysexits.h conventions (0=OK, 1=error, 65=usage, 70=software, 77=permission).
+**WHEN** `--enrich` flag is set AND Ollama OR claude-code provider is available
+**THEN** the system SHALL produce 3 enrichment outputs per finding.
 
-### REQ-009 (Atomic write): WHEN emitting SARIF / threat-model / patch artifacts THEN the system SHALL use atomic file write pattern (tempfile + rename, no partial writes).
+- **AC-003-1**: Each enriched finding has ≥ 1 `evidenceTrail` entry with `type: 'llm_judgment'`
+- **AC-003-2**: false-positive triage produces `confidence ∈ {★★★/★★/★/?}` literal calibrated
+- **AC-003-3**: severity re-rank can change `severity` field with literal rationale in `evidenceTrail[].rationale`
+- **AC-003-4**: exploit context explanation appears in `message` or new `evidenceTrail` entry with `rationale`
+- **AC-003-5**: When LLM provider unavailable, fall back to pure SAST output (no error)
 
-### REQ-010 (paid-API 6-layer defense): The system SHALL enforce 6-layer defense against accidental paid API calls (constructor gate, pre-flight reserve, key non-leak, CI auto-call ban, default mock/Ollama, no-credit-card service).
+### REQ-004 (Stage ④ Patch suggest)
 
-## Stage 3 — Design (Stage 3 着手時 literal 育成)
+**WHEN** user invokes `agentic-appsec patch <finding-id>`
+**THEN** the system SHALL generate a patch candidate AND validate via re-scan + syntax check.
+
+- **AC-004-1**: Output includes `remediationSuggestion.diff` as unified diff string parseable by `git apply --check`
+- **AC-004-2**: `remediationSuggestion.rescanValidated` = true iff re-run of SAST tool on patched file does not produce the same `ruleId` at same line
+- **AC-004-3**: `remediationSuggestion.syntaxValid` = true iff patched file parses (tsc/python -m py_compile)
+- **AC-004-4**: When validation fails, `remediationSuggestion` still emitted with `rescanValidated: false` (no error, user-visible state)
+
+### REQ-005 (Confidence schema、 W3 wedge)
+
+**WHEN** a finding is emitted in SARIF 2.1.0
+**THEN** the system SHALL embed confidence + probability + evidence_trail in SARIF `properties` bag (OASIS spec §3.8 + §3.8.1 propertyBag mechanism、 spec-compliant、 not a spec extension).
+
+- **AC-005-1**: SARIF `result.properties.confidence ∈ {★★★/★★/★/?}` literal
+- **AC-005-2**: SARIF `result.properties.probability` is number 0.0-1.0
+- **AC-005-3**: SARIF `result.properties.evidenceTrail` is JSON array with ≥ 1 entry
+- **AC-005-4**: Calibration consistency: `confidence='★★★'` implies `probability >= 0.85`、 `'★★'` ⇒ `0.65-0.85`、 `'★'` ⇒ `0.35-0.65`、 `'?'` ⇒ `< 0.35`
+- **AC-005-5**: External SARIF viewer (GitHub Code Scanning, VS Code SARIF extension) renders the finding without error (propertyBag is opaque to viewers but does not break parsing)
+
+### REQ-006 (Local-first)
+
+**WHEN** no LLM provider env-var is set AND `--use-claude-code` flag is absent
+**THEN** the system SHALL use Ollama-default or mock fallback, never invoke paid API.
+
+- **AC-006-1**: paid-API 6-layer defense intact: constructor gate + pre-flight reserve + key non-leak + CI auto-call ban + default Ollama/mock + no-credit-card service
+- **AC-006-2**: Network egress to Anthropic / OpenAI / Gemini domains = ZERO in default mode (verified via egress allowlist)
+- **AC-006-3**: When Ollama not installed AND `--use-claude-code` absent, system falls back to `mock` provider with literal warning message
+
+### REQ-007 (Offline mode)
+
+**WHEN** `--offline` flag is set
+**THEN** the system SHALL operate with network egress ZERO.
+
+- **AC-007-1**: `--offline` mode uses cached OSV.dev database snapshot (refreshable via `--refresh-db`)
+- **AC-007-2**: Ollama runs against `http://localhost:11434` only
+- **AC-007-3**: claude-code CLI invocation banned in `--offline` mode (literal error if `--use-claude-code` + `--offline` combined)
+
+### REQ-008 (Exit codes)
+
+The system SHALL conform to sysexits.h conventions.
+
+- **AC-008-1**: 0 = OK / 1 = error / 65 = EX_USAGE (bad CLI args) / 70 = EX_SOFTWARE (internal error) / 77 = EX_PERMISSION (filesystem denied)
+- **AC-008-2**: Defined in `src/errors/types.ts` (sibling tool reuse、 Stage 5)
+
+### REQ-009 (Atomic write)
+
+**WHEN** emitting SARIF / threat-model / patch artifacts
+**THEN** the system SHALL use atomic file write (tempfile + rename).
+
+- **AC-009-1**: Partial-write recovery: if process killed mid-write, target file is either old content or new content, never truncated
+- **AC-009-2**: Implementation in `src/io/emitters/atomic.ts` (sibling tool reuse、 Stage 5)
+
+### REQ-010 (paid-API 6-layer defense)
+
+The system SHALL enforce 6-layer defense against accidental paid API calls.
+
+- **AC-010-1**: Constructor gate = 2-factor env check (`<PROVIDER>_API_KEY` + `AGENTIC_APPSEC_LLM_PROVIDER`)
+- **AC-010-2**: Pre-flight reserve = 3 ceiling (token / req count / cost) + poisoned-state circuit
+- **AC-010-3**: Key non-leak = error msg masks API key (prefix 6 char only)
+- **AC-010-4**: CI auto-call ban = unstubbed `fetch` throws in vitest by default
+- **AC-010-5**: Default provider = Ollama (local) or mock — every entry point auto-fallback
+- **AC-010-6**: No credit-card service = ZERO dep requires payment (verified via dep tree audit)
+- **AC-010-7**: paid provider constructor reachable ONLY from CLI explicit flag、 never from library code path
+
+## Stage 3 — Design (Stage 3 着手時 育成、 既存草稿は §File structure plan 以下)
 
 ### File structure plan
 
