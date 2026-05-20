@@ -82,6 +82,20 @@ All three commands default to `--provider mock` (deterministic, no LLM call, no 
 
 **Cost contract**: paid LLM API direct calls are literal banned (see ADR-0007). `--use-claude-code` uses your own Claude Code subscription via the `claude` CLI; the tool itself holds no API key.
 
+## Portfolio constraint vs customer deployment
+
+This repository operates under a self-imposed `$0/month + no credit card` constraint as a supply-chain discipline demonstration. That constraint dictates the default Ollama `gemma3:4b` (~3.8 GB install footprint) — small enough to run on a consumer laptop, free to use, no payment required.
+
+**Customer deployments are not bound by that constraint.** Three upgrade paths are wired in on day one:
+
+| Goal | Mechanism | Tier |
+|---|---|---|
+| Larger local Ollama model (private, on-prem) | `OllamaProvider({ model: 'qwen2.5-coder:14b' })` | open-source SOTA |
+| Frontier quality via your own subscription | `--use-claude-code` flag | Claude Sonnet / Opus |
+| CI / offline / deterministic | `--provider mock` (default) | none |
+
+Within-family size↔quality is monotonic per [Gemma 3 Technical Report Table 18](https://arxiv.org/html/2503.19786v1) (4B→27B: +16.5 HumanEval pass@1) and [Qwen2.5-Coder Technical Report](https://arxiv.org/abs/2409.12186) ("positive correlation between model size and model performance"). The portfolio default is the **floor of useful quality**, not the ceiling. Full rationale + size budget + customer deployment recipe: [docs/adr/0008-default-llm-choice-and-customer-deployment.md](docs/adr/0008-default-llm-choice-and-customer-deployment.md).
+
 ## License
 
 MIT. See [LICENSE](LICENSE). Third-party attribution: [LICENSE-third-party.md](LICENSE-third-party.md).
