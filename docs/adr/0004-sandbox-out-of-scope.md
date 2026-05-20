@@ -45,10 +45,10 @@ distinct Phase β deliverable.
 2. **Quality > coverage**: shipping Phase α with 3 grounded stages
    (threat-model + vuln-identify + patch-suggest) is a better portfolio
    narrative than 4 stages with one structurally weak.
-3. **D-WASTE-ZERO compliance**: when in doubt, delete. Stage ③
+3. **waste-zero principle compliance**: when in doubt, delete. Stage ③
    inclusion required the sandbox narrative; sandbox narrative had
    4-round failure history. Delete Stage ③.
-4. **D-SINGLE-ROUTE compliance**: single best route = Phase β separate
+4. **single-best-route principle compliance**: single best route = Phase β separate
    repo for sandbox, honest "1-layer kernel-shared" narrative.
 5. **5-axis wedge preserved**: source-code level + defensive + local-first
    + TS/JS/Python + confidence-calibrated SARIF stays intact without

@@ -96,9 +96,9 @@ via `recalibrateProbability()`.
 - Spec-compliant: external SARIF viewers (GitHub Code Scanning, VS Code
   SARIF extension) parse the SARIF document without error.
 - Calibration enforced at one point (`recalibrateProbability`).
-- D8-CitationRequired natively wired via `evidenceTrail[].citation` =
+- Citation-required principle natively wired via `evidenceTrail[].citation` =
   URL or `file:line`.
-- D9-CalibratedHonesty natively wired via `confidence` marker.
+- Calibrated-honesty principle natively wired via `confidence` marker.
 
 ### Negative
 
