@@ -1,0 +1,19 @@
+# gitleaks config — extends gitleaks default ruleset with project-local
+# fixture allowlist. The test suite uses synthetic non-pattern values
+# (`FAKE_TEST_VALUE_*`, `PREFIX-*`) to avoid this scan blocking commits;
+# this file adds belt-and-suspenders allowlist for any future fixtures
+# that need a recognisable prefix for documentation purposes.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allowlist for synthetic test fixtures (clearly fake values)."
+paths = [
+  '''tests/.*\.test\.ts$''',
+  '''tests/.*/fixtures/.*''',
+]
+regexes = [
+  '''FAKE_TEST_VALUE_[A-Z0-9_]+''',
+  '''PREFIX-[A-Z0-9]+''',
+]

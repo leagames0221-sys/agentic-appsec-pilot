@@ -1,0 +1,33 @@
+name: gitleaks
+
+# Secret scanning. Catches `sk-ant-*`, `AKIA*`, `ghp_*`, JWT-shaped
+# fixtures that should never reach a public repo.
+# Runs on PR + push to main. Local pre-commit hook is the first line;
+# this CI job is the safety net.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: gitleaks scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@83373cf2f8c4db6e24b41c1a9b086bb9619e9cd3  # v2.3.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          config-path: .gitleaks.toml
