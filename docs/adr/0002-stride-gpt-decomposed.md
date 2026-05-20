@@ -19,7 +19,7 @@ threat_model.py L6 に `import streamlit as st` literal 存在、 UI 専用 PJ�
 
 ## Decision
 
-**直接 Python 依存 (subprocess / Python embed) しない**。 D-PRIOR-ART-FIRST の 「decomposed prior art」 approach で **STRIDE prompts + OWASP LLM/ASI mapping table + DREAD scoring schema を TypeScript に literal 移植**。
+**直接 Python 依存 (subprocess / Python embed) しない**。 prior-art-first principle の 「decomposed prior art」 approach で **STRIDE prompts + OWASP LLM/ASI mapping table + DREAD scoring schema を TypeScript に literal 移植**。
 
 ## Rationale
 

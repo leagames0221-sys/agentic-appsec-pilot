@@ -6,7 +6,7 @@ Accepted (2026-05-20)
 
 ## Context
 
-Phase α 着手前に既存 OSS / 商用 製品を網羅 scan、 wedge gap を literal 確定する必要あり。 D-PRIOR-ART-FIRST 順守 (internal doctrine reference: 既存 ひな形を 必ず scan、 ゼロ生成は立証責任)。
+Phase α 着手前に既存 OSS / 商用 製品を網羅 scan、 wedge gap を literal 確定する必要あり (internal doctrine reference: 既存 ひな形を 必ず scan、 ゼロ生成は立証責任、 prior-art-first principle)。
 
 ## Direct comparator: OpenAI Daybreak
 
