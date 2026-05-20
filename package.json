@@ -17,8 +17,8 @@
     "dist",
     "README.md",
     "LICENSE",
-    "SECURITY.md",
-    "NOTICE"
+    "LICENSE-third-party.md",
+    "SECURITY.md"
   ],
   "engines": {
     "node": ">=20.0.0",

@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node: 20+](https://img.shields.io/badge/Node-20+-brightgreen.svg)](https://nodejs.org/)
 
-> ⚠ **Pre-public draft (Stages 1-7 in progress)**. PRIVATE repo until ★★★ verdict gate via independent reviewer + user explicit promotion. PUBLIC flip criteria: `docs/adr/0006-public-flip-criteria.md` (Stage 8).
+> ⚠ **Pre-public draft (Phase α writer self-verify clean, awaiting promotion gate).** PRIVATE repo until user-explicit promotion. PUBLIC flip criteria: `docs/adr/0006-public-flip-criteria.md`.
 
 Local-first AI-agent harness for defensive AppSec on TS/JS/Python codebases.
 
@@ -16,7 +16,7 @@ Three stages, source-code level, $0/month default:
 
 1. **Threat model generation** — STRIDE + OWASP LLM Top 10 + OWASP ASI mapping from your repo, output as editable YAML/JSON.
 2. **Vulnerability identification** — SAST (OpenGrep + Bandit) + SCA (OSV-Scanner) + LLM-driven enrichment (false-positive triage, severity re-rank, exploit context).
-3. **Patch suggestion** — LLM-generated remediation candidate + re-scan validation + SARIF 2.1.0 output + CycloneDX VEX + SLSA L2 attestation.
+3. **Patch suggestion** — LLM-generated remediation candidate + re-scan validation + SARIF 2.1.0 output + CycloneDX VEX. (Cosign signing + SLSA L2 attestation of patch artifacts = Phase β scope, **not implemented in Phase α**.)
 
 ## Why it's distinct (5-axis wedge)
 
@@ -32,9 +32,12 @@ Daybreak-style OSS replicas don't yet cover the intersection of all five:
 
 ## Status
 
-- Stage 1 Foundation in progress
-- Stage 2 IR → Stage 11 PUBLIC flip not yet started
-- See `docs/spec.md` for Stage 1 Discovery + EARS requirements
+- **Phase α writer self-verify**: 7/7 criteria PASS on current HEAD ([`docs/verify/phase-alpha-round-1-self-verify.md`](docs/verify/phase-alpha-round-1-self-verify.md))
+- Test suite: 64/64 PASS on 3-OS CI matrix (Ubuntu / macOS / Windows), coverage line 59.89% / branch 68.44% / function 70.23%
+- ADRs: 0001–0008 all Accepted ([`docs/adr/`](docs/adr/))
+- Awaiting user-explicit promotion gate for PUBLIC flip per [`docs/adr/0006-public-flip-criteria.md`](docs/adr/0006-public-flip-criteria.md)
+- Spec status: Stage 1 Discovery + Stage 2 EARS Acceptance Criteria complete ([`docs/spec.md`](docs/spec.md))
+- Phase β (sandboxed exploit lab) ships as a separate repo `agentic-appsec-exploit-lab` and is out of scope here
 
 ## Install
 
@@ -71,7 +74,7 @@ agentic-appsec scan ./my-repo \
   --output findings.sarif \
   --vex findings.vex.json
 
-# Stage 4: patch suggestion (uses your own Claude Code subscription)
+# Stage 3: patch suggestion (uses your own Claude Code subscription via spawned CLI; no API key held by this tool)
 agentic-appsec patch findings.sarif \
   --repo ./my-repo \
   --use-claude-code \
@@ -80,7 +83,9 @@ agentic-appsec patch findings.sarif \
 
 All three commands default to `--provider mock` (deterministic, no LLM call, no network egress). Set `--provider ollama` for local-LLM enrichment, or `--use-claude-code` to call your existing Claude Code subscription via the CLI.
 
-**Cost contract**: paid LLM API direct calls are literal banned (see ADR-0007). `--use-claude-code` uses your own Claude Code subscription via the `claude` CLI; the tool itself holds no API key.
+**First-run behavior with no scanners installed**: `scan` gracefully degrades — if OpenGrep / Bandit / OSV-Scanner are absent from `PATH`, it logs `tool status: ...=not-installed` on stderr and emits an empty `findings: []` SARIF (exit code 0). This is by design (the CLI never crashes on missing optional tooling); install at least one scanner from the **Install** section above for actual output.
+
+**Cost contract**: this tool holds no API key and makes no paid-API direct calls (see ADR-0007). `--use-claude-code` spawns your locally-installed `claude` CLI, which uses your own Claude Code subscription — billing flows through your existing Anthropic account, not through this tool. `--provider ollama` and `--provider mock` are fully offline and free.
 
 ## Portfolio constraint vs customer deployment
 
@@ -106,4 +111,4 @@ MIT. See [LICENSE](LICENSE). Third-party attribution: [LICENSE-third-party.md](L
 - OpenGrep (https://github.com/opengrep/opengrep) — SAST engine, LGPL-2.1
 - Bandit (https://github.com/PyCQA/bandit) — Python SAST, Apache-2.0
 - OSV-Scanner (https://github.com/google/osv-scanner) — SCA, Apache-2.0
-- Sigstore cosign — verify-blob + SLSA L2 attestation
+- Sigstore cosign (https://github.com/sigstore/cosign) — referenced for Phase β patch-artifact signing (verify-blob + SLSA L2 attestation); not yet wired in Phase α

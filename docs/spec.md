@@ -1,6 +1,6 @@
-# agentic-appsec-pilot — Specification (Stage 1 Discovery)
+# agentic-appsec-pilot — Specification (Stage 1 Discovery + Stage 2 EARS complete, Stage 3 Design = actual tree)
 
-> 4-stage SDD: **Discovery → Requirements (EARS) → Design (Structure + Depends) → Tasks**。 各 stage 末で user approve gate。 本 file は Stage 1 Discovery 状態、 Stage 2 着手時 EARS section literal 育成。
+> 4-stage SDD: **Discovery → Requirements (EARS) → Design (Structure + Depends) → Tasks**。 各 stage 末で user approve gate。 本 file は Stage 1 Discovery + Stage 2 EARS Acceptance Criteria 育成済、 Stage 3 Design は実装後の actual src tree を SSoT とする (planned tree からの drift は §File structure に literal 反映)。
 
 ## Stage 1 — Discovery
 
@@ -19,9 +19,9 @@ TS / JS / Python codebase の owner (個人開発者 / SMB AppSec / OSS maintain
 |---|---|---|
 | ① Threat Model | repo URL → STRIDE + OWASP LLM/ASI mapping YAML/JSON (editable、 human-reviewable) | STRIDE-GPT (decomposed prior art、 ADR-0002) |
 | ② Vuln Identify | code → SAST (OpenGrep + Bandit) + SCA (OSV-Scanner) + LLM enrich | OpenGrep / Bandit / OSV-Scanner |
-| ④ SARIF Patch | finding → patch candidate + re-scan validation + SARIF 2.1.0 + CycloneDX VEX + cosign + SLSA L2 | sibling tool (sbom-pilot) reuse |
+| ③ SARIF Patch | finding → patch candidate + re-scan validation + SARIF 2.1.0 + CycloneDX VEX emit | (cosign / SLSA L2 attestation = Phase β planned, NOT implemented in Phase α) |
 
-Stage ③ exploit sandbox = Phase β `agentic-appsec-exploit-lab` 別 repo (kernel-share 問題の構造的解消)。
+Stage ④ (旧番号) = cosign verify-blob + SLSA L2 attestation は Phase β 範囲に移行 (Phase α scope は SARIF + VEX emit まで)。 Stage exploit sandbox = Phase β `agentic-appsec-exploit-lab` 別 repo (kernel-share 問題の構造的解消)。
 
 ### Non-goals (Phase α scope 外)
 
@@ -142,60 +142,70 @@ The system SHALL enforce 6-layer defense against accidental paid API calls.
 - **AC-010-6**: No credit-card service = ZERO dep requires payment (verified via dep tree audit)
 - **AC-010-7**: paid provider constructor reachable ONLY from CLI explicit flag、 never from library code path
 
-## Stage 3 — Design (Stage 3 着手時 育成、 既存草稿は §File structure plan 以下)
+## Stage 3 — Design (actual tree as built, lock by `.dependency-cruiser.cjs`)
 
-### File structure plan
+### File structure (actual, verified against `git ls-files src/` on HEAD)
 
 ```
 src/
 ├── ir/                              # threat-model + finding + evidence-trail schema
 │   ├── types.ts
-│   ├── schema.ts                    # zod + ajv validators
-│   └── severity.ts                  # OSV severity ranking (sbom-pilot literal reuse)
+│   └── schema.ts                    # zod + ajv validators
 ├── stages/
 │   ├── threat-model/
 │   │   ├── prompts/                 # STRIDE-GPT decomposed (ADR-0002)
 │   │   │   ├── stride.ts
 │   │   │   ├── owasp-llm.ts
-│   │   │   └── owasp-asi.ts
-│   │   ├── generator.ts             # repo walker + prompt invoke
-│   │   └── emitter.ts               # YAML/JSON output
+│   │   │   ├── owasp-asi.ts
+│   │   │   └── types.ts
+│   │   └── generator.ts             # repo walker + prompt invoke + JSON emit
 │   ├── vuln-identify/
+│   │   ├── index.ts                 # entry orchestrator
+│   │   ├── types.ts
 │   │   ├── opengrep-wrap.ts
 │   │   ├── bandit-wrap.ts
 │   │   ├── osv-scanner-wrap.ts
 │   │   ├── llm-enrich.ts
 │   │   └── correlator.ts            # dedup logic (REQ-002)
 │   └── patch-suggest/
+│       ├── index.ts                 # entry orchestrator
 │       ├── generator.ts
 │       └── validator.ts             # re-scan validation (REQ-004)
 ├── io/emitters/
-│   ├── sarif.ts                     # SARIF 2.1.0 (sibling tool reuse)
+│   ├── sarif.ts                     # SARIF 2.1.0
 │   ├── cyclonedx-vex.ts
-│   └── atomic.ts                    # atomic write (sibling tool reuse)
+│   └── atomic.ts                    # atomic write (tempfile + rename)
 ├── providers/llm/
+│   ├── index.ts                     # provider factory + auto-fallback
+│   ├── types.ts
 │   ├── ollama.ts                    # default (gemma3:4b)
-│   ├── claude-code-cli.ts           # optional spawn (ADR-0007)
-│   └── paid-defense.ts              # 6-layer defense (sibling tool reuse)
-├── util/
-│   ├── credential-scrub.ts          # sibling tool reuse
-│   ├── ansi-strip.ts                # sibling tool reuse
-│   └── cosign.ts                    # sibling tool reuse
+│   ├── mock.ts                      # deterministic fallback (no LLM call)
+│   ├── claude-code-cli.ts           # optional spawn (ADR-0007/0008)
+│   └── paid-defense.ts              # 6-layer defense
 ├── errors/
-│   └── types.ts                     # sysexits exit codes (sibling tool reuse)
+│   ├── index.ts                     # error class factories
+│   └── types.ts                     # sysexits exit codes
 └── cli/
     ├── index.ts                     # commander entrypoint
     ├── threat-model.ts
     ├── scan.ts
     ├── patch.ts
-    └── node-version-check.ts        # sibling tool reuse
+    └── node-version-check.ts
 ```
 
-### Module boundary + dependency
+### Drift from initial plan (honestly disclosed)
+
+The Stage 1 Discovery plan referenced 3 files that were **not implemented in Phase α** (moved to Phase β or de-scoped):
+
+- `src/ir/severity.ts` — OSV severity ranking was inlined into `src/stages/vuln-identify/llm-enrich.ts` and `correlator.ts`; no standalone severity module.
+- `src/stages/threat-model/emitter.ts` — JSON emit logic was kept inline in `generator.ts` (single output format, no separate emitter needed for Phase α).
+- `src/util/` directory entirely — `credential-scrub.ts` / `ansi-strip.ts` / `cosign.ts` are Phase β scope. cosign verify-blob + SLSA L2 attestation are NOT implemented in Phase α (deferred to Phase β when the patch artifact storage path is finalized).
+
+### Module boundary + dependency (enforced by `.dependency-cruiser.cjs`)
 
 - `ir/` = pure schema、 no external dep
 - `stages/*` depends on `ir/`, `providers/llm/`, `io/emitters/`
-- `io/emitters/` depends on `ir/`, `util/`
+- `io/emitters/` depends on `ir/`
 - `providers/llm/` depends on `errors/`
 - `cli/` depends on all of the above
 
