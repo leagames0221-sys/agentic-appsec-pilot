@@ -30,12 +30,12 @@ XBOW / ZeroPath / Snyk Agent Fix / Endor / Aikido / Mobb / Corgea / GitHub Copil
 | name | URL | license | stars | last activity | scope | gap vs 本 PJ |
 |---|---|---|---|---|---|---|
 | Tachi | https://github.com/davidmatousek/tachi | Apache-2.0 | 69 | 2026-05-14 | **architecture-level** threat model (Mermaid/PlantUML/C4)、 SARIF 2.1.0、 Claude Code subagent、 14 agent、 6 command | ✗ source-code 解析しない (README literal quote: "the harness analyzes architecture, not code") / ✗ patch generation なし / ✗ Gemini API required (infographic) / ✗ standalone CLI ではない |
-| pwnkit | (GitHub topic listing 経由確認) | (TBD) | 29 | 2026-05-19 | autonomous **pentesting** engine (offensive)、 SARIF | ✗ defensive AppSec ではない |
-| bughunter-ai | (GitHub topic listing) | (TBD) | 20 | 2026-05-19 | autonomous **bug bounty** framework (offensive)、 20 AI agent | ✗ offensive |
-| numasec | (GitHub topic listing) | (TBD) | 370 | 2026-05-08 | "AI Agent for Cyber Security" with pentesting | ✗ pentesting 中心、 SAST + patch 主目的ではない |
-| repomind | (GitHub topic listing) | (TBD) | 250 | 2026-05-18 | code analysis + security audit + **Gemini** | ✗ Gemini cloud-required、 local-first ではない |
-| Mythos Research | (GitHub topic listing) | (TBD) | 15 | 2026-05-04 | Anthropic Mythos OSS replica、 agentic vuln discovery + disclosure | ✗ scope = bug discovery + disclosure、 SAST + patch 中心ではない |
-| ClawGuard | (GitHub topic listing) | (TBD) | 7 | 2026-05-20 | prompt injection scanner、 225 pattern | ✗ prompt-injection 専用 |
+| pwnkit | https://github.com/topics/vulnerability-scanner (URL pin pending、 entry from `vulnerability-scanner` topic listing 2026-05-20) | (TBD) | 29 | 2026-05-19 | autonomous **pentesting** engine (offensive)、 SARIF | ✗ defensive AppSec ではない |
+| bughunter-ai | https://github.com/h4ckologic/bughunter-ai | MIT | 20 | 2026-05-19 | "Autonomous Bug Bounty Hunting Framework powered by Claude Code. 20 AI agents, state-machine orchestration, Burp Suite MCP, credential vault, LLM security track" | ✗ **bug bounty hunting (offensive)**: find bugs in others' systems with exploit verification、 not defensive SAST/patch in your own repo |
+| numasec | https://github.com/FrancescoStabile/numasec | AGPL-3.0 | 370 | 2026-05-08 | "The AI Agent for Cyber Security" | ✗ pentesting 中心、 SAST + patch 主目的ではない / AGPL-3.0 viral license |
+| repomind | https://github.com/topics/vulnerability-scanner (URL pin pending、 entry from topic listing) | (TBD) | 250 | 2026-05-18 | code analysis + security audit + **Gemini** | ✗ Gemini cloud-required、 local-first ではない |
+| Mythos Research | https://github.com/topics/agentic-security (URL pin pending、 entry from `agentic-security` topic listing) | (TBD) | 15 | 2026-05-04 | "Outside-in replication of Anthropic's Mythos Preview — open-source agentic vulnerability-discovery scaffold" | ✗ scope = bug discovery + coordinated disclosure、 SAST + patch 中心ではない |
+| ClawGuard | https://github.com/topics/agentic-security (URL pin pending、 entry from topic listing) | (TBD) | 7 | 2026-05-20 | "open-source prompt injection scanner with 225 detection patterns, 15 languages, F1=98.3%" | ✗ prompt-injection 専用 |
 | Buttercup | https://github.com/trailofbits/buttercup | AGPL-3.0 | 1.6k | 2025-08-14 | DARPA AIxCC CRS | ✗ **C/Java 解析 only**、 TS/JS/Python 非対応 |
 
 ## Building blocks (Tier C OSS 採用)
@@ -68,17 +68,38 @@ source-code-level + defensive AppSec + local-first (Ollama $0/month) + TS/JS/Pyt
 - Ollama default = $0/month 公約 literal 順守
 - pnpm = lockfile + internal package guard 順守
 
-## Sources
+## Sources (literal verified 2026-05-20)
 
+### Direct comparator
 - Daybreak primary article: https://www.helpnetsecurity.com/2026/05/12/openai-daybreak-openai-daybreak-vulnerability-validation-initiative/
 - OpenAI Codex Security (Daybreak genealogy): https://openai.com/index/codex-security-now-in-research-preview/
 - OpenAI Aardvark (Daybreak precursor): https://openai.com/index/introducing-aardvark/
-- Tachi: https://github.com/davidmatousek/tachi
-- STRIDE-GPT: https://github.com/mrwadams/stride-gpt
-- OpenGrep: https://github.com/opengrep/opengrep
-- Bandit: https://github.com/PyCQA/bandit
-- Buttercup: https://github.com/trailofbits/buttercup
-- CVE-2025-9074 NVD: https://nvd.nist.gov/vuln/detail/CVE-2025-9074
-- SARIF 2.1.0: https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html
+
+### OSS competitor (8 件)
+- Tachi: https://github.com/davidmatousek/tachi (Apache-2.0, 69★, 2026-05-14)
+- bughunter-ai: https://github.com/h4ckologic/bughunter-ai (MIT, 20★, 2026-05-19)
+- numasec: https://github.com/FrancescoStabile/numasec (AGPL-3.0, 370★, 2026-05-08)
+- Buttercup: https://github.com/trailofbits/buttercup (AGPL-3.0, 1.6k★, 2025-08-14)
+- pwnkit (URL pin pending): from https://github.com/topics/vulnerability-scanner
+- repomind (URL pin pending): from https://github.com/topics/vulnerability-scanner
+- Mythos Research (URL pin pending): from https://github.com/topics/agentic-security
+- ClawGuard (URL pin pending): from https://github.com/topics/agentic-security
+
+### Building block (採用 OSS、 Windows 動作 literal verified)
+- STRIDE-GPT: https://github.com/mrwadams/stride-gpt (MIT, 1k★, Anthropic Claude 4.5 native)
+- OpenGrep: https://github.com/opengrep/opengrep (LGPL-2.1, 2.6k★, v1.22.0 2026-05-19、 release assets に `opengrep-core_windows_x86.zip` literal 同梱 verified via `gh release view --repo opengrep/opengrep`)
+- Bandit: https://github.com/PyCQA/bandit (Apache-2.0, v1.9.4 2026-02、 Python >=3.10、 pure Python wheel `bandit-1.9.4-py3-none-any.whl` Windows pip install 可)
+- OSV-Scanner: https://github.com/google/osv-scanner (Apache-2.0、 sibling tool sbom-pilot 既採用)
+- Sigstore cosign: https://github.com/sigstore/cosign
+
+### Spec (literal verified)
+- SARIF 2.1.0 spec: https://docs.oasis-open.org/sarif/sarif/v2.1.0/csprd01/sarif-v2.1.0-csprd01.html (§3.8 Property bags + §3.8.1 General "every object defined in this specification MAY contain a property named properties whose value is a property bag")
 - CycloneDX VEX: https://cyclonedx.org/capabilities/vex/
-- SLSA: https://slsa.dev/spec/v1.1/
+- SLSA v1.1: https://slsa.dev/spec/v1.1/
+
+### Runtime / dependency (literal verified)
+- Ollama Windows installer: https://ollama.com/download/windows ("Requires Windows 10 or later"、 `OllamaSetup.exe` native binary、 PowerShell `irm https://ollama.com/install.ps1 | iex` alternative)
+- Claude Code CLI Windows: https://code.claude.com/docs/en/setup ("Windows 10 1809+ or Windows Server 2019+", PowerShell `irm https://claude.ai/install.ps1 | iex`, WinGet `winget install Anthropic.ClaudeCode`, npm `@anthropic-ai/claude-code` global)
+
+### CVE / supporting evidence
+- CVE-2025-9074 NVD: https://nvd.nist.gov/vuln/detail/CVE-2025-9074 (Docker Desktop CVSS 9.3, 2025-08-20 published)
