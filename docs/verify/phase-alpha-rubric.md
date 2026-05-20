@@ -5,8 +5,10 @@
 > UNCERTAIN per criterion. Final verdict: ★★★ requires ALL criteria
 > PASS. One FAIL or one UNCERTAIN → verdict is ★★ or lower.
 
-**Anchored at**: commit `53d7c59` on `master` (run `git rev-parse HEAD`
-locally to verify).
+**Anchored at**: current `master` HEAD — reviewer runs
+`git rev-parse HEAD` locally to capture the exact SHA being verified.
+The rubric itself is commit-agnostic; criteria below apply to whichever
+commit is HEAD when the reviewer is dispatched.
 
 **Repo**: `C:\Users\admin\Projects\agentic-appsec-pilot\` (currently
 PRIVATE; PUBLIC flip is downstream of this verdict per ADR-0006).
