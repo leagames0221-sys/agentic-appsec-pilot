@@ -1,7 +1,7 @@
 /**
  * dependency-cruiser config — enforces one-way layer dependency.
  *
- * Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+ * Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
  *
  * Layers (top to bottom, imports flow downward only):
  *   src/cli/             (top)

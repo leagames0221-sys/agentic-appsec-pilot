@@ -120,7 +120,7 @@ Stage ④ (旧番号) = cosign verify-blob + SLSA L2 attestation は Phase β �
 The system SHALL conform to sysexits.h conventions.
 
 - **AC-008-1**: 0 = OK / 1 = error / 65 = EX_USAGE (bad CLI args) / 70 = EX_SOFTWARE (internal error) / 77 = EX_PERMISSION (filesystem denied)
-- **AC-008-2**: Defined in `src/errors/types.ts` (sibling tool reuse、 Stage 5)
+- **AC-008-2**: Defined in `src/errors/types.ts` (adapted from companion repo [mcp-guard](https://github.com/leagames0221-sys/mcp-guard))
 
 ### REQ-009 (Atomic write)
 
@@ -128,7 +128,7 @@ The system SHALL conform to sysexits.h conventions.
 **THEN** the system SHALL use atomic file write (tempfile + rename).
 
 - **AC-009-1**: Partial-write recovery: if process killed mid-write, target file is either old content or new content, never truncated
-- **AC-009-2**: Implementation in `src/io/emitters/atomic.ts` (sibling tool reuse、 Stage 5)
+- **AC-009-2**: Implementation in `src/io/emitters/atomic.ts` (adapted from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot))
 
 ### REQ-010 (paid-API 6-layer defense)
 

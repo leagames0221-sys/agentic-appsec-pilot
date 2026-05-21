@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node: 20+](https://img.shields.io/badge/Node-20+-brightgreen.svg)](https://nodejs.org/)
 
-> ⚠ **Pre-public draft (Phase α writer self-verify clean, awaiting promotion gate).** PRIVATE repo until user-explicit promotion. PUBLIC flip criteria: `docs/adr/0006-public-flip-criteria.md`.
+> ⚠ **Pre-public draft (Phase α author self-verify clean, awaiting promotion gate).** PRIVATE repo until user-explicit promotion. PUBLIC flip criteria: `docs/adr/0006-public-flip-criteria.md`.
 
 **In plain words**: this is a command-line tool that reads your TypeScript / JavaScript / Python source code, asks a small AI model (running on your own laptop, no cloud bill) to look for security problems, and writes back not just the problem list but a draft fix you can review. It costs **$0/month** by default, needs **no API key**, and runs **offline** once you have the local model installed.
 
@@ -34,7 +34,7 @@ Daybreak-style OSS replicas don't yet cover the intersection of all five:
 
 ## Status
 
-- **Phase α writer self-verify**: 7/7 criteria PASS on current HEAD ([`docs/verify/phase-alpha-round-1-self-verify.md`](docs/verify/phase-alpha-round-1-self-verify.md))
+- **Phase α author self-verify**: 7/7 criteria PASS on current HEAD ([`docs/verify/phase-alpha-round-1-self-verify.md`](docs/verify/phase-alpha-round-1-self-verify.md))
 - Test suite: 64/64 PASS on 3-OS CI matrix (Ubuntu / macOS / Windows), coverage line 59.89% / branch 68.44% / function 70.23%
 - ADRs: 0001–0008 all Accepted ([`docs/adr/`](docs/adr/))
 - Awaiting user-explicit promotion gate for PUBLIC flip per [`docs/adr/0006-public-flip-criteria.md`](docs/adr/0006-public-flip-criteria.md)

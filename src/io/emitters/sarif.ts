@@ -1,7 +1,7 @@
 /**
  * SARIF 2.1.0 emitter with W3 wedge propertyBag extension.
  *
- * Adapted from sibling tool mcp-guard (MIT, internal universal pattern),
+ * Adapted from companion repo mcp-guard (https://github.com/leagames0221-sys/mcp-guard, MIT),
  * extended to embed our W3 wedge fields (confidence + probability +
  * evidence_trail) into SARIF 2.1.0 `result.properties` per OASIS spec
  * §3.8 + §3.8.1 propertyBag mechanism (spec-compliant, not a spec

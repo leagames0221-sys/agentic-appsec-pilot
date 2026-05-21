@@ -1,5 +1,5 @@
 // Exit code constants aligned with POSIX sysexits.h.
-// Adapted from sibling tool mcp-guard (MIT, internal universal pattern).
+// Adapted from companion repo mcp-guard (https://github.com/leagames0221-sys/mcp-guard, MIT).
 // Spec mapping: AC-008-1, ADR-0007.
 
 export const ExitCode = {

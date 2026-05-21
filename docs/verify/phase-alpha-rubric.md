@@ -118,30 +118,22 @@ LICENSE-third-party.md contains STRIDE-GPT MIT full text.
 
 ## C7 — Channel B integrity (opacity scan clean)
 
-**Criterion**: no internal-infra keyword leaks into any committed file
-(src/ + tests/ + docs/ + CLAUDE.md + README.md + SECURITY.md + .github/).
+**Criterion**: no leak of the author's private cross-project
+infrastructure terminology into any committed file in this repository.
 
-**Forbidden keywords** (case-sensitive):
-- `HIVE`, `memory_bank_v2`, `SECRETARY_MASTER`
-- Literal home-directory path `~/.claude/`
-- Internal doctrine codes: `D-WRANGLER`, `D-AI-LED`, `D-CONSUMER-HW`,
-  `D-HEADCOUNT`, `D-SINGLE-ROUTE`, `D-VERIFY-PRIORITY`, `D-WASTE-ZERO`,
-  `D-HIVE-OPACITY`, `D-NO-DESTRUCTIVE`, `D-TIER-RUBRIC`, `D-NPM-3GUARD`,
-  `D-PKG-3GUARD`, `D-NEW-PJ`, `D-FOREST`, `D-OBJECTIVE`, `D-ARA-PURPOSE`,
-  `D8-CitationRequired`, `D9-CalibratedHonesty`
-- `knowledge-library`, `ARA doctrine`
+**Forbidden-pattern source**: the author maintains a private pattern
+list out-of-tree (gitignored at `.claude/internal_notes.md`). The
+patterns themselves are deliberately not enumerated in this committed
+rubric file — listing them here would re-expose what the scan is
+designed to redact.
 
-**Evidence**: run a recursive grep across the repo (excluding
-`node_modules/`, `.git/`, `coverage/`, `dist/`, `_scratch/`,
-`.claude/internal_notes.md` which is gitignored):
+**Evidence procedure**:
 
-```bash
-grep -r -E "(HIVE|memory_bank_v2|SECRETARY_MASTER|~/\\.claude/|D-WRANGLER|D-AI-LED|D-CONSUMER-HW|D-HEADCOUNT|D-SINGLE-ROUTE|D-VERIFY-PRIORITY|D-WASTE-ZERO|D-HIVE-OPACITY|D-NO-DESTRUCTIVE|D-TIER-RUBRIC|D-NPM-3GUARD|D-PKG-3GUARD|D-NEW-PJ|D-FOREST|D-OBJECTIVE|D-ARA-PURPOSE|D8-CitationRequired|D9-CalibratedHonesty|knowledge-library|ARA doctrine)" \
-  --include="*.ts" --include="*.md" --include="*.yml" --include="*.json" --include="*.toml" --include="*.cjs" \
-  src/ tests/ docs/ .github/ CLAUDE.md README.md SECURITY.md LICENSE-third-party.md package.json tsconfig.json vitest.config.ts .gitleaks.toml .dependency-cruiser.cjs .gitignore
-```
+1. Read the gitignored pattern list (author-only).
+2. Run a recursive grep across all tracked files using those patterns.
+3. Confirm 0 matches.
 
-**PASS condition**: command output is empty (no matches).
+**PASS condition**: grep across tracked files emits 0 matches.
 
 ---
 

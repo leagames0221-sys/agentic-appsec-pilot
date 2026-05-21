@@ -1,7 +1,7 @@
 /**
  * Paid-API 6-layer defense utilities.
  *
- * Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+ * Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
  *
  * agentic-appsec-pilot's hard constraint is "no surprise network calls
  * and no surprise credit-card charges". Per ADR-0007 the project does

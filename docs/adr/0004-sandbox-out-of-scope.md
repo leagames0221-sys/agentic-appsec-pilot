@@ -74,8 +74,8 @@ distinct Phase β deliverable.
 ## Future direction (Phase β)
 
 - Repo: `agentic-appsec-exploit-lab` (separate from this PJ)
-- Sandbox primitive: Podman rootless on WSL2 (cross-PJ default per
-  internal pin policy 2026-05-20). Narrative will honestly state
+- Sandbox primitive: Podman rootless on WSL2 (author's default for
+  containerization across companion repos). Narrative will honestly state
   "1-layer kernel-shared isolation, not bulletproof, suitable for
   exploit candidates not external attackers."
 - Scope: take a Finding from this PJ's SARIF output + construct a
@@ -85,7 +85,7 @@ distinct Phase β deliverable.
 
 ## References
 
-- Stage 0 lock supersede memory (internal SSoT reference, 2026-05-20)
+- Stage 0 lock decision (author's private notes, 2026-05-20)
 - CVE-2025-9074 NVD: https://nvd.nist.gov/vuln/detail/CVE-2025-9074
 - WSL2 single-kernel architecture:
   https://learn.microsoft.com/en-us/windows/wsl/wsl2-kernel

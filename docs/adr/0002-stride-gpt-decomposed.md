@@ -26,7 +26,7 @@ threat_model.py L6 に `import streamlit as st` literal 存在、 UI 専用 PJ�
 1. TS / Node 20 LTS PJ に Python + Streamlit dep 引込みは architectural mismatch
 2. local-first / $0-month wedge の narrative も汚染 (Python runtime + Streamlit 配布が 必要になる)
 3. threat_model.py 主要 function は pure logic = 安全に literal 移植可能
-4. LLM client 部分は internal 既存 paid-API 6-layer defense (sibling tool sbom-pilot literal reuse) で 上書き可能
+4. LLM client 部分は paid-API 6-layer defense (adapted from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot)) で 上書き可能
 5. STRIDE-GPT MIT license 順守は attribution NOTICE で literal 達成 (LICENSE-third-party.md で 明記、 README §Acknowledgements で literal cite)
 
 ## Work decomposition (5 sub-task、 6-10 work-day 見積、 honest)
@@ -35,7 +35,7 @@ threat_model.py L6 に `import streamlit as st` literal 存在、 UI 専用 PJ�
 |---|---|---|
 | 1. prompt extraction | 2 | threat_model.py + attack_tree.py + dread.py + mitigations.py から STRIDE prompt + OWASP LLM/ASI mapping + DREAD scoring prompt を literal 抽出、 `src/stages/threat-model/prompts/{stride,owasp-llm,owasp-asi,dread,mitigation}.ts` 配置 |
 | 2. schema port | 1 | threat-model output JSON schema (Threat Type + Scenario + Potential Impact + OWASP_LLM + OWASP_ASI) を TS interface + Zod validator 化 |
-| 3. Claude integration | 1 | optional `claude-code` CLI spawn 経由 prompt 投入 (ADR-0007 順守)、 paid-API 6-layer defense (sibling tool reuse) 適用 |
+| 3. Claude integration | 1 | optional `claude-code` CLI spawn 経由 prompt 投入 (ADR-0007 順守)、 paid-API 6-layer defense (adapted from companion repo sbom-pilot) 適用 |
 | 4. Ollama integration | 2 | gemma3:4b default、 prompt template adapt、 JSON output 強制 (response_format: json or parsing fallback) |
 | 5. fixture validation | 1-2 | 5 fixture repo (TS / JS / Python 各種) で 出力 schema PASS + manual eyeball |
 
@@ -54,9 +54,9 @@ threat_model.py L6 に `import streamlit as st` literal 存在、 UI 専用 PJ�
 
 ## Compliance with prior-art doctrine
 
-- internal doctrine (prior-art-first): ✓ STRIDE-GPT を identified、 80% fit ではないため literal 改造ではなく decomposed (情報ひな形抽出) 採用
-- internal doctrine (waste-zero): ✓ ゼロ生成ではない (STRIDE prompt template は STRIDE-GPT から literal 借用)
-- internal doctrine (prior-art-security-gate): ✓ STRIDE-GPT MIT license verified、 1k★、 active maintenance (2026-05 時点)
+- Principle (prior-art-first): ✓ STRIDE-GPT を identified、 80% fit ではないため literal 改造ではなく decomposed (情報ひな形抽出) 採用
+- Principle (waste-zero): ✓ ゼロ生成ではない (STRIDE prompt template は STRIDE-GPT から literal 借用)
+- Principle (security-gate before adopting external source): ✓ STRIDE-GPT MIT license verified、 1k★、 active maintenance (2026-05 時点)
 
 ## License compliance
 

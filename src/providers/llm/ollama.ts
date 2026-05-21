@@ -1,7 +1,7 @@
 /**
  * Ollama LLM provider — local-only HTTP client.
  *
- * Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+ * Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
  *
  * Ollama serves models like `gemma3:4b` over a localhost HTTP API
  * (default port 11434, no auth). Runs entirely on the user's machine,

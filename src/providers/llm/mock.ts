@@ -1,7 +1,7 @@
 /**
  * Mock LLM provider — default when no explicit opt-in.
  *
- * Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+ * Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
  *
  * Returns deterministic text without any network call. The CLI uses this
  * by default so threat-model / scan / patch subcommands remain functional

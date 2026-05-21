@@ -6,7 +6,7 @@ Accepted (2026-05-20)
 
 ## Context
 
-Phase α 着手前に既存 OSS / 商用 製品を網羅 scan、 wedge gap を literal 確定する必要あり (internal doctrine reference: 既存 ひな形を 必ず scan、 ゼロ生成は立証責任、 prior-art-first principle)。
+Phase α 着手前に既存 OSS / 商用 製品を網羅 scan、 wedge gap を literal 確定する必要あり (prior-art-first principle: 既存 ひな形を 必ず scan、 ゼロ生成は立証責任)。
 
 ## Direct comparator: OpenAI Daybreak
 
@@ -45,8 +45,8 @@ XBOW / ZeroPath / Snyk Agent Fix / Endor / Aikido / Mobb / Corgea / GitHub Copil
 | STRIDE-GPT | https://github.com/mrwadams/stride-gpt | MIT | Stage ① threat-model prompt source (decomposed prior art、 ADR-0002) | ✓ 1k★ Anthropic Claude 4.5 native |
 | OpenGrep | https://github.com/opengrep/opengrep | LGPL-2.1 | Stage ② SAST (TS/JS/Python 対応) | ✓ 2.6k★ v1.22.0 (2026-05-19) Semgrep fork |
 | Bandit | https://github.com/PyCQA/bandit | Apache-2.0 | Stage ② Python SAST | ✓ v1.9.4 (2026-02) PyCQA-maintained |
-| OSV-Scanner | https://github.com/google/osv-scanner | Apache-2.0 | Stage ② SCA | sibling tool sbom-pilot 既採用、 reuse |
-| Sigstore cosign | https://github.com/sigstore/cosign | Apache-2.0 | Stage ④ verify-blob + SLSA L2 | sibling tool sbom-pilot 既採用、 reuse |
+| OSV-Scanner | https://github.com/google/osv-scanner | Apache-2.0 | Stage ② SCA | reused from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot) |
+| Sigstore cosign | https://github.com/sigstore/cosign | Apache-2.0 | Phase β patch-artifact verify-blob + SLSA L2 (NOT wired in Phase α) | referenced from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot) |
 
 ## REJECTED candidates
 
@@ -64,9 +64,9 @@ source-code-level + defensive AppSec + local-first (Ollama $0/month) + TS/JS/Pyt
 
 ## Stack-selection rationale
 
-- TypeScript + Node 20 LTS = sibling tool (mcp-guard + sbom-pilot) trilogy 整合 + 既存 reuse ~60% (20 file literal copy)
-- Ollama default = $0/month 公約 literal 順守
-- pnpm = lockfile + internal package guard 順守
+- TypeScript + Node 20 LTS = matches companion repos [mcp-guard](https://github.com/leagames0221-sys/mcp-guard) + [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot) (defensive-tool trilogy); ~60% of utility code (20 files) is direct adaptation with attribution
+- Ollama default = $0/month commitment, literal compliance
+- pnpm = lockfile + repository pinning policy compliance
 
 ## Sources (literal verified 2026-05-20)
 
@@ -89,7 +89,7 @@ source-code-level + defensive AppSec + local-first (Ollama $0/month) + TS/JS/Pyt
 - STRIDE-GPT: https://github.com/mrwadams/stride-gpt (MIT, 1k★, Anthropic Claude 4.5 native)
 - OpenGrep: https://github.com/opengrep/opengrep (LGPL-2.1, 2.6k★, v1.22.0 2026-05-19、 release assets に `opengrep-core_windows_x86.zip` literal 同梱 verified via `gh release view --repo opengrep/opengrep`)
 - Bandit: https://github.com/PyCQA/bandit (Apache-2.0, v1.9.4 2026-02、 Python >=3.10、 pure Python wheel `bandit-1.9.4-py3-none-any.whl` Windows pip install 可)
-- OSV-Scanner: https://github.com/google/osv-scanner (Apache-2.0、 sibling tool sbom-pilot 既採用)
+- OSV-Scanner: https://github.com/google/osv-scanner (Apache-2.0、 reused from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot))
 - Sigstore cosign: https://github.com/sigstore/cosign
 
 ### Spec (literal verified)

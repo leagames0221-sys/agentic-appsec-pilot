@@ -1,5 +1,5 @@
 # Dependabot — weekly automated dependency PRs.
-# Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+# Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
 
 version: 2
 

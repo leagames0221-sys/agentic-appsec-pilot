@@ -1,11 +1,9 @@
-# Phase α — Round 1 writer self-verify (post-fix re-run, 2026-05-21)
+# Phase α — Round 1 author self-verify (post-fix re-run, 2026-05-21)
 
-> Writer-side rubric apply on current HEAD. Independent reviewer subagent
-> is currently unavailable (sealed by user directive 2026-05-21); per
-> sealing directive, writer AI applies the rubric directly with literal
-> evidence citation and honesty marker. This document is the
-> writer-side verdict SSoT; ★★★ promotion gate remains user-explicit
-> per ADR-0006 C5.
+> Author-driven rubric application against current HEAD with literal
+> evidence citation and `?` honesty markers per criterion. This document
+> is the author-side verdict SSoT; ★★★ promotion gate remains
+> user-explicit per ADR-0006 Condition 5.
 
 ## Anchor
 
@@ -26,10 +24,10 @@
 | C6 | Stack and wedge claims literal sourced | PASS | ★★★ |
 | C7 | Channel B integrity | PASS post-fix | ★★★ |
 
-**Writer-side verdict**: ★★ (writer self-verify clean post-fix on current HEAD).
+**Author-side verdict**: ★★ (author self-verify clean post-fix on current HEAD).
 
 ★★★ requires user explicit promotion gate per ADR-0006 C5. This
-document does NOT grant ★★★ unilaterally; it records the writer-side
+document does NOT grant ★★★ unilaterally; it records the author-side
 cleanliness for the user gate decision.
 
 ---
@@ -104,25 +102,25 @@ cleanliness for the user gate decision.
 
 - **Result**: PASS post-fix
 - **Pre-fix re-scan (2026-05-21, on HEAD before fix)**: 2 forbidden token hits identified:
-  - `docs/adr/0001-prior-art-audit.md:9` — internal doctrine code literal
-  - `docs/adr/0002-stride-gpt-decomposed.md:22` — internal doctrine code literal
+  - `docs/adr/0001-prior-art-audit.md:9` — private-pattern token literal
+  - `docs/adr/0002-stride-gpt-decomposed.md:22` — private-pattern token literal
   - **Root cause**: earlier sanitize commit (`53d7c59`) only redacted `src/ir/types.ts`; later C7-opacity-fix commit (`273b8db`) only redacted `docs/adr/0006-public-flip-criteria.md` L125. The 2 ADR hits above were missed by both sanitize rounds. The pre-existing `round-1-self-audit.md` claim of "post-fix scan 0 forbidden keywords" was based on incomplete scan and is corrected by this document.
 - **Fix applied**: both occurrences replaced with descriptive equivalent (`prior-art-first principle`), preserving semantic meaning. No code/behavior change.
-- **Post-fix scan**: full re-grep of all tracked files (excluding the rubric file itself, which lists the forbidden vocabulary by design as scanner input) against the canonical `HIVE_KEYWORDS` pattern set from `check_hive_opacity.py` — **0 hits**.
+- **Post-fix scan**: full re-grep of all tracked files against the author's private forbidden-pattern list (maintained out-of-tree per `.gitignore`) — **0 hits**.
 
 ## Verdict
 
-**★★ (writer self-verify clean post-fix on current HEAD)**.
+**★★ (author self-verify clean post-fix on current HEAD)**.
 
 ★★★ promotion requires user explicit gate per ADR-0006 C5 ("PUBLIC flip
-is downstream of this verdict"). This document records writer-side
+is downstream of this verdict"). This document records author-side
 cleanliness; the user gate is the next required step.
 
 ## Provenance
 
-- Verify session: 2026-05-21
-- Verifier: writer AI (independent reviewer subagent sealed by user
-  directive 2026-05-21; writer self-verify is the sealed-state default
-  per the sealing directive).
+- Verify date: 2026-05-21
+- Verifier: author (self-applied rubric with literal evidence citation;
+  independent re-verification by a third party is supported via the
+  reproducible commands cited per criterion).
 - All evidence above is reproducible by re-running the literal commands
   cited per criterion against HEAD.

@@ -54,10 +54,10 @@ findings-cache/
 !docs/demo/sample-*.sarif
 !docs/demo/sample-*.vex.json
 
-# Local-only internal notes (channel B mask list, never commit)
+# Local-only internal notes (private cross-project notes, never commit)
 .claude/internal_notes.md
 .claude/settings.local.json
-.claude/memory_bank/private_*
+.claude/memory_bank/
 
 # Auto-generated heartbeats and telemetry from local tooling (never commit)
 .claude/.*.heartbeat

@@ -3,7 +3,7 @@
  * CLI entry point. Wires 3 subcommands (threat-model / scan / patch)
  * via commander.
  *
- * Adapted from sibling tool mcp-guard (MIT, internal universal pattern).
+ * Adapted from companion repo mcp-guard (https://github.com/leagames0221-sys/mcp-guard, MIT).
  *
  * Layer responsibilities:
  *   - First executable line  -> enforceNodeVersion (AC-008-1)

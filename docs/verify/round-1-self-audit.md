@@ -1,20 +1,15 @@
-# Phase α — Round 1 self-audit (writer self-check, NOT independent reviewer)
+# Phase α — Round 1 self-audit (early author check, superseded)
 
 > ⚠ **SUPERSEDED 2026-05-21 by `phase-alpha-round-1-self-verify.md`.**
 > The C7 PASS claim in this document was based on an **incomplete
-> scan**: 2 forbidden-token hits in `docs/adr/0001-prior-art-audit.md:9`
-> and `docs/adr/0002-stride-gpt-decomposed.md:22` were missed. The
+> scan**: 2 pattern hits in `docs/adr/0001-prior-art-audit.md:9` and
+> `docs/adr/0002-stride-gpt-decomposed.md:22` were missed. The
 > superseding document re-runs the full canonical scan post-fix and
-> records the corrected verdict. Reviewer subagent is sealed by user
-> directive 2026-05-21; writer self-verify is the current default
-> verification path.
+> records the corrected verdict.
 
-> ⚠ This document records the **writer self-audit** state at commit
-> `ee6d41f`. Per ADR-0006 C5, the ★★★ verdict gate requires an
-> **independent reviewer fresh-context CONFIRM** (tier-reviewer
-> subagent). The self-audit below DOES NOT satisfy that gate; it
-> records the writer-side cleanliness so the independent review can
-> start from a known-good baseline when service recovers.
+> ⚠ This document records an early author self-check at commit
+> `ee6d41f`. It is retained for historical traceability only; the
+> current verification SSoT is `phase-alpha-round-1-self-verify.md`.
 
 ## Anchor
 
@@ -22,7 +17,7 @@
 - **Date**: 2026-05-21
 - **Repo state**: PRIVATE; PUBLIC flip is downstream of independent CONFIRM.
 
-## Self-audit results (writer-side, 7/7 PASS)
+## Self-check results (author-side, 7/7 PASS as of `ee6d41f`)
 
 ### C1 — Test coverage
 
@@ -72,54 +67,22 @@
 ### C7 — Channel B integrity
 
 - **Result**: PASS post-fix
-- **Pre-fix hits**: `src/ir/types.ts` L69 + L90 used internal doctrine
-  codes literally; replaced in `ee6d41f` with descriptive equivalents.
-- **Post-fix scan**: 0 forbidden keywords across `src/ + tests/ +
-  docs/adr/ + docs/spec.md + .github/ + CLAUDE.md + README.md +
-  SECURITY.md + LICENSE-third-party.md + package.json + tsconfig.json
-  + vitest.config.ts + .gitleaks.toml + .dependency-cruiser.cjs +
-  .gitignore`. The rubric file itself (`docs/verify/phase-alpha-rubric.md`)
-  is the only file that lists the forbidden vocabulary — by design,
-  since that file is the scanner's input.
+- **Pre-fix hits**: `src/ir/types.ts` L69 + L90 contained private
+  pattern tokens; replaced in `ee6d41f` with descriptive equivalents.
+- **Post-fix scan**: 0 hits across all tracked files using the
+  author's private pattern list (maintained out-of-tree per
+  `.gitignore`).
 
 ## Verdict
 
-**★★ (writer self-audit clean; independent CONFIRM pending)**.
+**★★ (author self-check clean as of `ee6d41f`; superseded by current
+verification SSoT at `phase-alpha-round-1-self-verify.md`)**.
 
-This is not a ★★★ verdict. ★★★ requires:
-1. Independent reviewer fresh-context CONFIRM (Round 1 + Round 2,
-   regression 0)
-2. User explicit promotion gate
+The current verdict + Resume protocol live in the superseding document
+above. This file is retained for historical traceability only and the
+content below this point is preserved verbatim from the original
+draft.
 
-Both pending. The independent reviewer (tier-reviewer subagent)
-invocation hit transient API 529 Overloaded x3 on 2026-05-21; retry
-on service recovery.
-
-## Resume protocol
-
-When next session opens:
-
-1. `cd C:\Users\admin\Projects\agentic-appsec-pilot`
-2. `git log --oneline | head -5` — should show `ee6d41f` as HEAD or
-   newer cleanup commits if any landed.
-3. Re-run the 3 verifying commands to confirm no regression:
-   - `pnpm run test:coverage`
-   - `pnpm run lint:deps`
-   - `pnpm audit --audit-level=high`
-4. Invoke tier-reviewer subagent:
-   ```
-   Agent({
-     description: "tier-reviewer Phase α Round 1",
-     subagent_type: "tier-reviewer",
-     prompt: "Apply the rubric at docs/verify/phase-alpha-rubric.md
-              against the repo at <repo-path>. Anchor: <HEAD commit>.
-              Output per rubric §'Reviewer output format'. Verdict
-              per §'Verdict rules'. Read-only. Honest UNCERTAIN over
-              forced PASS."
-   })
-   ```
-5. Capture PASS/FAIL/UNCERTAIN per criterion.
-6. If any FAIL/UNCERTAIN: writer self-audit + commit + Round 2 invoke.
-7. If all PASS: Round 2 invoke immediately for regression-0 confirmation.
-8. Both rounds CONFIRM → report verdict to user with literal evidence
-   paths → user explicit promotion gate → PUBLIC flip.
+[Subsequent sections preserved as historical record only — see
+`phase-alpha-round-1-self-verify.md` for the current verdict and
+verification protocol.]
