@@ -120,6 +120,39 @@ All three commands default to `--provider mock` (deterministic, no LLM call, no 
 
 The captures below are reproducible from a fresh clone: run the literal commands and you will get byte-similar output (timestamps and UUIDs differ). The literal files live under [`docs/demo/`](docs/demo/) so a reviewer can diff against their own run.
 
+### Visual snapshot
+
+| Command | Screenshot |
+|---|---|
+| `agentic-appsec --help` | [help.png](docs/demo/cli/help.png) |
+| `cat docs/demo/sample-scan.sarif` (post-`scan` SARIF) | [scan.png](docs/demo/cli/scan.png) |
+| `agentic-appsec threat-model . --provider mock` | [threat-model.png](docs/demo/cli/threat-model.png) |
+
+Rendered from raw stdout/stderr by [docs/demo/cli/render.py](docs/demo/cli/render.py)
+(Pillow + MS Gothic, no network egress). The `scan` PNG renders the literal
+[`sample-scan.sarif`](docs/demo/sample-scan.sarif) — produced by an empty scan
+because OpenGrep / Bandit / OSV-Scanner were not installed in the Phase α
+fixture run; with the three SAST/SCA tools installed, the `runs[0].results`
+array populates with detector findings. The `threat-model` PNG renders the
+literal mock-provider output (300 bytes, deterministic UUID seed).
+
+To regenerate the PNGs locally:
+
+```bash
+NO_COLOR=1 node dist/cli/index.js --help > docs/demo/cli/help.txt 2>&1
+cp docs/demo/sample-scan.sarif docs/demo/cli/scan.txt
+NO_COLOR=1 node dist/cli/index.js threat-model . \
+  --app-type "Agentic AI application" \
+  --authentication "JWT bearer + per-route role check" \
+  --internet-facing yes --sensitive-data "source code" \
+  --provider mock > docs/demo/cli/threat-model.txt 2>&1
+
+# Render PNGs (system Python >= 3.10 + Pillow)
+python docs/demo/cli/render.py
+```
+
+### Literal output references
+
 **`agentic-appsec --help`** ([`docs/demo/help.txt`](docs/demo/help.txt)):
 
 ```

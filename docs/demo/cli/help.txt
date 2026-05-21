@@ -1,0 +1,18 @@
+Usage: agentic-appsec [options] [command]
+
+Local-first AI-agent harness for defensive AppSec on TS/JS/Python codebases.
+Threat-model + SAST/SCA + patch-suggestion + SARIF 2.1.0, runs on Ollama by
+default.
+
+Options:
+  -V, --version                  Print version and exit.
+  -h, --help                     display help for command
+
+Commands:
+  threat-model [options] <repo>  Generate STRIDE + OWASP LLM/ASI threat model
+                                 for a repo.
+  scan [options] <repo>          Run OpenGrep + Bandit + OSV-Scanner, emit SARIF
+                                 2.1.0 + optional CycloneDX VEX.
+  patch [options] <sarif-path>   Generate patch suggestion for a finding in a
+                                 SARIF file.
+  help [command]                 display help for command
