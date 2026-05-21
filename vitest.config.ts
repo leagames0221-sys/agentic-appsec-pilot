@@ -12,15 +12,18 @@ export default defineConfig({
       include: ['src/**/*.ts'],
       exclude: ['src/**/*.test.ts', 'src/**/types.ts', 'src/cli/index.ts'],
       thresholds: {
-        // Phase α floor. Spawn-paths (Ollama HTTP / claude-code CLI / OpenGrep /
-        // Bandit / OSV-Scanner / patch validator) intentionally unmocked per
-        // AC-010-4 (CI auto-call ban). Pure-logic paths (ir / correlator /
-        // emitters / prompts) hit >90%. Tighten via fixture-driven
-        // integration tests in Stage 8/9 before PUBLIC flip.
-        lines: 55,
-        functions: 65,
-        statements: 55,
-        branches: 50,
+        // PUBLIC-flip thresholds (ADR-0006 Condition 1). Cleared by
+        // tests/cli/runners.integration.test.ts which drives the 3 CLI
+        // runners end-to-end with mocked Writable streams + tmpdir
+        // fixtures + provider='mock'. Spawn-paths (Ollama HTTP /
+        // claude-code CLI / OpenGrep / Bandit / OSV-Scanner / patch
+        // validator re-scan against real binaries) remain intentionally
+        // unmocked per AC-010-4 (CI auto-call ban); those branches show
+        // as uncovered and that is correct.
+        lines: 75,
+        functions: 80,
+        statements: 75,
+        branches: 70,
       },
     },
   },
