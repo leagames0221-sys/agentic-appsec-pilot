@@ -1,6 +1,6 @@
 name: OpenSSF Scorecard
 
-# Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+# Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
 # Skip-on-private guard until PUBLIC flip.
 
 on:

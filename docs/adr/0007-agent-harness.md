@@ -36,7 +36,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 - 利点: Ollama 必須 path で 全機能動作 ($0-month wedge literal 順守)
 - 利点: 上位品質欲しい user は `--use-claude-code` flag で (a) path
-- 利点: internal doctrine layer (local-first wrangler) literal 順守
+- 利点: local-first principle 順守 (no cloud LLM dependency)
 - 採用
 
 ## Decision
@@ -85,10 +85,10 @@ export function createAgentHarness(env: NodeJS.ProcessEnv, flags: CliFlags): Age
 
 ### Positive
 
-- $0-month 公約 literal 順守 (Ollama path で 全機能動作)
-- internal doctrine layer (local-first wrangler) literal 順守
+- $0-month commitment literal 順守 (Ollama path で 全機能動作)
+- local-first principle 順守 (no network egress in default path)
 - user の既存 Claude Code 契約 reuse (新規 API key 不要)
-- paid-API 6-layer defense intact (sibling tool sbom-pilot pattern literal inherit)
+- paid-API 6-layer defense intact (adapted from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot))
 
 ### Negative
 
@@ -97,7 +97,7 @@ export function createAgentHarness(env: NodeJS.ProcessEnv, flags: CliFlags): Age
 
 ## Compliance verification
 
-- internal doctrine (local-first wrangler): ✓ Ollama default
+- Principle (local-first): ✓ Ollama default
 - paid-API 6-layer defense layer 6 (no credit-card required): ✓ Anthropic API direct call literal banned
 - $0-month wedge: ✓ Ollama path で 全 機能動作
 

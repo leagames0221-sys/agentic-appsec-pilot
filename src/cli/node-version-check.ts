@@ -2,7 +2,7 @@
 // src/cli/index.ts so users on a too-old runtime get an actionable
 // error before commander even loads.
 //
-// Adapted from sibling tool mcp-guard (MIT, internal universal pattern).
+// Adapted from companion repo mcp-guard (https://github.com/leagames0221-sys/mcp-guard, MIT).
 //
 // "Too old" = major < MIN_NODE_MAJOR. Spec-required Node 20 LTS for
 // stable fetch / AbortSignal / ESM behaviour. Spec mapping: AC-008-1,

@@ -93,6 +93,8 @@ and the SLA is not contractual.
 
 ## Acknowledgements
 
-Security posture borrows pattern from sibling tools `mcp-guard` and
-`sbom-pilot` (security trilogy). STRIDE-GPT (MIT, Matthew Adams) is the
-prompt template source for the threat-model stage.
+Security posture borrows pattern from companion repos
+[mcp-guard](https://github.com/leagames0221-sys/mcp-guard) and
+[sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot)
+(defensive-tool trilogy by the same author). STRIDE-GPT (MIT, Matthew
+Adams) is the prompt template source for the threat-model stage.

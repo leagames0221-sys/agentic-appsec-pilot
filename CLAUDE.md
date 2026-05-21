@@ -1,7 +1,8 @@
 # agentic-appsec-pilot — Tier 2 PJ-local rules
 
-> Tier 1 universal doctrine / security / orchestrator は internal infra 経由で auto-import 済。
-> 本 file は **PJ 固有** 規約のみ記述。
+> Author's cross-project conventions are loaded out-of-tree (private).
+> This file documents **PJ-specific** rules for AI coding assistants
+> (Claude Code, Cursor, etc.) working in this repo.
 
 ## PJ Identity
 
@@ -33,7 +34,7 @@ source-code level + defensive AppSec + local-first (Ollama $0/month) + TS/JS/Pyt
 - profile framing: 「AI 開発者 / フルスタックエンジニア」
 - "solo" / "individual" / "single dev" framing words avoided
 - Off-repo personal identity details and unrelated project names not disclosed
-- Internal infrastructure terminology not disclosed (commit-time sanitization hook blocks at write)
+- Author's private cross-project terminology not disclosed (commit-time sanitization hook blocks at write)
 
 詳細 mask list: `.claude/internal_notes.md` (gitignored、 commit 不可)。
 
@@ -64,25 +65,25 @@ Tier 1 default を継承 + 下記 addition:
 
 - 実 vulnerability finding の credential / API key literal commit 禁止
 - 顧客 codebase (受託案件 hint) literal commit 禁止
-- Channel B 順守: 内部 infra 用語 / 内部 module 名 commit 禁止 (pre-commit hook で literal block)
+- Author's private cross-project terminology / private internal names commit 禁止 (pre-commit hook で literal block)
 - **クレカ要求 external service 採用 literal 禁止** (Cloudflare free tier / GitHub Actions free tier 等 クレカ不要 service のみ)
 - **paid LLM API (Anthropic / OpenAI 等) auto-call literal 禁止** (env-var-gated optional、 user 明示時のみ active)
 - **`claude-code` CLI 以外の paid LLM provider direct call 禁止** (Ollama local + claude-code CLI optional のみ、 ADR-0007)
 - **package manager install (`pnpm install` / `npm install` 等) 不用意実行禁止** (Stage 2 IR 完了 + Stage 3 着手時 1 回のみ、 lockfile commit と同時)
-- **Docker Desktop 新規採用禁止** (internal pin policy 順守、 但し Phase α は container 不要)
+- **Docker Desktop 新規採用禁止** (author's container policy 順守、 但し Phase α は container 不要)
 
 ## PJ 固有 required
 
-- 全 commit に `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` (internal universal policy)
+- 全 commit に `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` (author's commit attribution policy)
 - ADR-based 設計判断記録 (`docs/adr/NNNN-*.md`)
 - LICENSE = MIT 維持
 - 外部 OSS adopt 前に security audit gate 必須 (Scorecard ≥ 7 + signed release + dep tree audit + user 承認)
 - **LLM 使用時 default = Ollama local** (consumer laptop 完走前提、 primary model = `gemma3:4b`)
 - **mock mode (LLM 不使用、 pure static SAST/SCA のみ) を default fallback として常時 available**
 - 全 CI workflow が GitHub Actions free tier (月 2,000 分) 内で完走することを literal verify
-- **paid-API 6-layer defense intact** (sbom-pilot pattern literal inherit)
+- **paid-API 6-layer defense intact** (pattern adapted from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot))
 
-## paid-API 6-layer defense (sibling tool inherit、 internal universal pattern)
+## paid-API 6-layer defense (adapted from companion repo [sbom-pilot](https://github.com/leagames0221-sys/sbom-pilot))
 
 1. **Constructor gate**: 2-factor env check
 2. **Pre-flight reserve**: 3 ceiling (token / request count / cost) + poisoned state
@@ -98,4 +99,4 @@ paid provider 構築 path は **CLI layer の explicit construction のみ** (`-
 - [docs/spec.md](docs/spec.md): PJ 仕様の SSoT (Stage 1 Discovery doc から育成)
 - [docs/adr/](docs/adr/): 設計判断記録 (0001-0008、 全件 Accepted)
 - [.claude/memory_bank/](.claude/memory_bank/): session 連絡帳 (Cline 5-file pattern)
-- Stage 0 lock SSoT: internal SSoT 参照 (handoff supersede memory、 2026-05-20)
+- Stage 0 lock SSoT: author's private notes (out-of-tree)

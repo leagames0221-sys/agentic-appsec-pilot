@@ -65,4 +65,4 @@ adopted, even as an optional path.
 - OSV.dev: https://osv.dev/
 - OSV-Scanner JSON output schema: https://google.github.io/osv-scanner/output/
 - Trivy repo (rejected): https://github.com/aquasecurity/trivy
-- Stage 0 lock supersede memory (internal SSoT reference, 2026-05-20).
+- Stage 0 lock decision (author's private notes, 2026-05-20).

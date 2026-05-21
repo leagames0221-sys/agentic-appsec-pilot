@@ -1,7 +1,7 @@
 name: CodeQL
 
 # Static analysis for TypeScript surface. Weekly cron + PR push.
-# Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+# Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
 # Pre-PUBLIC-flip guard: skip on private repos so the Actions tab stays
 # green; workflow auto-activates on PUBLIC visibility flip.
 

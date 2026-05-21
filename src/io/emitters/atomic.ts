@@ -1,7 +1,7 @@
 /**
  * Atomic file write helper.
  *
- * Adapted from sibling tool sbom-pilot (MIT, internal universal pattern).
+ * Adapted from companion repo sbom-pilot (https://github.com/leagames0221-sys/sbom-pilot, MIT).
  *
  * Writes content to a temporary path in the same directory, fsyncs, then
  * renames into place. Partial writes are invisible to concurrent readers
