@@ -47,7 +47,7 @@ source-code level + defensive AppSec + local-first (Ollama $0/month) + TS/JS/Pyt
 - **CI**: GitHub Actions 3-OS matrix (ubuntu/macos/windows) + free tier 内
 - **LLM**: Ollama gemma3:4b default + optional `claude-code` CLI invoke (ADR-0007)
 - **Sandbox**: 本 PJ では container 不要 (Stage ③ なし、 Phase β `agentic-appsec-exploit-lab` で適用)
-- **OSS building block**: STRIDE-GPT decomposed (ADR-0002) + OpenGrep + Bandit + OSV-Scanner + Sigstore cosign + SLSA L2
+- **OSS building block**: STRIDE-GPT decomposed (ADR-0002) + OpenGrep + Bandit + OSV-Scanner. Sigstore cosign + SLSA L2 attestation are referenced for Phase β patch-artifact signing; NOT wired in Phase α.
 
 ## PJ 固有 verify priority
 
@@ -96,6 +96,6 @@ paid provider 構築 path は **CLI layer の explicit construction のみ** (`-
 ## 関連 doc
 
 - [docs/spec.md](docs/spec.md): PJ 仕様の SSoT (Stage 1 Discovery doc から育成)
-- [docs/adr/](docs/adr/): 設計判断記録 (0001-0007)
+- [docs/adr/](docs/adr/): 設計判断記録 (0001-0008、 全件 Accepted)
 - [.claude/memory_bank/](.claude/memory_bank/): session 連絡帳 (Cline 5-file pattern)
 - Stage 0 lock SSoT: internal SSoT 参照 (handoff supersede memory、 2026-05-20)

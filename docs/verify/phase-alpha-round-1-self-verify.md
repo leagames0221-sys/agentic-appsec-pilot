@@ -36,14 +36,15 @@ cleanliness for the user gate decision.
 
 ## C1 — Test coverage gate
 
-- **Result**: PASS
+- **Result**: PASS — Phase α floor AND ADR-0006 Condition 1 PUBLIC threshold both cleared.
 - **Command**: `pnpm run test:coverage`
 - **Exit code**: 0
-- **Evidence (literal output)**:
-  - `Test Files  12 passed (12)`
-  - `Tests       64 passed (64)`
-  - Coverage: lines 59.89%, branches 68.44%, functions 70.23%, statements 59.89%
-  - Thresholds (vitest.config.ts): lines ≥ 55, branches ≥ 50, functions ≥ 65, statements ≥ 55 — all met.
+- **Evidence (literal output, post-tightening 2026-05-21)**:
+  - `Test Files  13 passed (13)`
+  - `Tests       84 passed (84)` (was 64 — `tests/cli/runners.integration.test.ts` adds 20 runner-level integration tests)
+  - Coverage: **lines 82.59% / branches 71.15% / functions 91.66% / statements 82.59%**
+  - Thresholds (vitest.config.ts post-tightening): lines ≥ **75**, branches ≥ **70**, functions ≥ **80**, statements ≥ **75** — all cleared.
+  - ADR-0006 Condition 1 PUBLIC threshold (lines/statements ≥ 75, functions ≥ 80, branches ≥ 70): **PASS**.
 
 ## C2 — Layer enforcement clean
 
