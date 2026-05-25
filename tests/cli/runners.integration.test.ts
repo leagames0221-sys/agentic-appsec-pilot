@@ -273,8 +273,9 @@ describe('runPatch (CLI runner integration)', () => {
 
   it('selects finding by --finding-id when multiple results present', async () => {
     const multi = structuredClone(sampleSarif);
-    multi.runs[0].results.push({
-      ...sampleSarif.runs[0].results[0],
+    const baseResult = sampleSarif.runs[0]!.results[0]!;
+    multi.runs[0]!.results.push({
+      ...baseResult,
       partialFingerprints: { agenticAppsecFindingId: 'F-test-002' },
       message: { text: 'Second finding' },
     });
@@ -365,10 +366,11 @@ describe('runPatch (CLI runner integration)', () => {
   // missing-level so branch coverage clears the PUBLIC ≥70 threshold.
   async function runPatchWithLevel(level: string | undefined, fileSuffix: string): Promise<void> {
     const variant = structuredClone(sampleSarif);
+    const variantResult = variant.runs[0]!.results[0]!;
     if (level === undefined) {
-      delete (variant.runs[0].results[0] as { level?: string }).level;
+      delete (variantResult as { level?: string }).level;
     } else {
-      variant.runs[0].results[0].level = level;
+      variantResult.level = level;
     }
     const sarifPath = join(workdir, `patch-level-${fileSuffix}.sarif`);
     await fs.writeFile(sarifPath, JSON.stringify(variant), 'utf8');
