@@ -1,14 +1,10 @@
-# agentic-appsec-pilot — Tier 2 PJ-local rules
-
-> Author's cross-project conventions are loaded out-of-tree (private).
-> This file documents **PJ-specific** rules for AI coding assistants
-> (Claude Code, Cursor, etc.) working in this repo.
+# agentic-appsec-pilot — PJ-local rules
 
 ## PJ Identity
 
 - 案件: `agentic-appsec-pilot` — Local-first AI-agent harness for defensive AppSec on TS/JS/Python codebases
-- 目的: 個人開発者 / SMB / AppSec team 向け defensive-first CLI tool として portfolio に追加、 security tool trilogy #3 (mcp-guard #1 + sbom-pilot #2 の sibling)
-- scope: Phase α (本 repo 単独 ★★★ verify) → PUBLIC flip = trilogy 完成 narrative
+- 目的: 個人開発者 / SMB / AppSec team 向け defensive-first CLI tool、 security tool sibling (mcp-guard, sbom-pilot)
+- scope: Phase α = 本 repo 単独 verify、 完了後 PUBLIC
 - target audience: TS/JS/Python codebase を持つ OSS maintainer + 個人開発者 + SMB AppSec team で false-positive triage + patch suggestion に困っている人
 - Phase β = `agentic-appsec-exploit-lab` 別 repo として Phase α 完了後 単独 ship (kernel-share 問題の構造的解消)
 
@@ -26,19 +22,7 @@ source-code level + defensive AppSec + local-first (Ollama $0/month) + TS/JS/Pyt
 
 詳細: `docs/adr/0001-prior-art-audit.md`
 
-## Repo public framing
-
-本 repo は **GitHub PRIVATE で initial commit**、 ★★★ verify 通過後 user explicit promotion gate で PUBLIC 化。 PUBLIC 化時の framing:
-
-- author identity: `tomohiro takada` (GitHub `leagames0221-sys`)
-- profile framing: 「AI 開発者 / フルスタックエンジニア」
-- "solo" / "individual" / "single dev" framing words avoided
-- Off-repo personal identity details and unrelated project names not disclosed
-- Author's private cross-project terminology not disclosed (commit-time sanitization hook blocks at write)
-
-詳細 mask list: `.claude/internal_notes.md` (gitignored、 commit 不可)。
-
-## Stack (確定済、 Stage 0 lock SSoT 順守)
+## Stack (確定済)
 
 - **Language**: TypeScript + Node.js 20 LTS
 - **Package manager**: pnpm (lockfile commit)
@@ -52,8 +36,6 @@ source-code level + defensive AppSec + local-first (Ollama $0/month) + TS/JS/Pyt
 
 ## PJ 固有 verify priority
 
-Tier 1 default を継承 + 下記 addition:
-
 1. SARIF 2.1.0 schema validation (OASIS 公式 schema literal 適用、 propertyBag extension で confidence + probability + evidence_trail)
 2. Threat model output schema validation (STRIDE + OWASP LLM/ASI mapping、 ADR-0002 で定義)
 3. Finding correlator dedup logic test (OpenGrep + Bandit + LLM 3 source 統合)
@@ -65,16 +47,14 @@ Tier 1 default を継承 + 下記 addition:
 
 - 実 vulnerability finding の credential / API key literal commit 禁止
 - 顧客 codebase (受託案件 hint) literal commit 禁止
-- Author's private cross-project terminology / private internal names commit 禁止 (pre-commit hook で literal block)
 - **クレカ要求 external service 採用 literal 禁止** (Cloudflare free tier / GitHub Actions free tier 等 クレカ不要 service のみ)
 - **paid LLM API (Anthropic / OpenAI 等) auto-call literal 禁止** (env-var-gated optional、 user 明示時のみ active)
 - **`claude-code` CLI 以外の paid LLM provider direct call 禁止** (Ollama local + claude-code CLI optional のみ、 ADR-0007)
 - **package manager install (`pnpm install` / `npm install` 等) 不用意実行禁止** (Stage 2 IR 完了 + Stage 3 着手時 1 回のみ、 lockfile commit と同時)
-- **Docker Desktop 新規採用禁止** (author's container policy 順守、 但し Phase α は container 不要)
+- **Docker Desktop 新規採用禁止** (Phase α は container 不要)
 
 ## PJ 固有 required
 
-- 全 commit に `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` (author's commit attribution policy)
 - ADR-based 設計判断記録 (`docs/adr/NNNN-*.md`)
 - LICENSE = MIT 維持
 - 外部 OSS adopt 前に security audit gate 必須 (Scorecard ≥ 7 + signed release + dep tree audit + user 承認)
@@ -98,5 +78,3 @@ paid provider 構築 path は **CLI layer の explicit construction のみ** (`-
 
 - [docs/spec.md](docs/spec.md): PJ 仕様の SSoT (Stage 1 Discovery doc から育成)
 - [docs/adr/](docs/adr/): 設計判断記録 (0001-0008、 全件 Accepted)
-- [.claude/memory_bank/](.claude/memory_bank/): session 連絡帳 (Cline 5-file pattern)
-- Stage 0 lock SSoT: author's private notes (out-of-tree)
