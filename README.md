@@ -38,12 +38,12 @@ Daybreak-style OSS replicas don't yet cover the intersection of all five:
 
 **How I approached it.** Every adopted dependency and every design choice has an ADR (`docs/adr/0001`–`0008`) recording the alternatives considered and the trade-offs accepted. Where prior art existed and I could reuse the substance instead of the code, I did — STRIDE-GPT's threat-model prompt templates are ported via decomposed prior art ([ADR-0002](docs/adr/0002-stride-gpt-decomposed.md)) rather than vendored as a runtime dep. Where I made a non-trivial scaling decision (Ollama `gemma3:4b` as the default model), I sourced the within-family monotonicity claim to primary papers from Google DeepMind, Alibaba, and Meta ([ADR-0008](docs/adr/0008-default-llm-choice-and-customer-deployment.md)) rather than asserting it as opinion. Where I had to pick between two mature SCA tools, I rejected one explicitly with five reasons in the ADR ([ADR-0003](docs/adr/0003-osv-scanner-not-trivy.md)) rather than supporting both.
 
-**What this exercise validated.** Three things turned out to be worth defending. First, the `$0/month + no credit card` constraint is not a limitation pretending to be a feature — it is a supply-chain discipline demonstration, and the customer-deployment upgrade path is wired on day one ([ADR-0008](docs/adr/0008-default-llm-choice-and-customer-deployment.md) §Customer deployment context). Second, the confidence-calibrated finding schema ([ADR-0005](docs/adr/0005-confidence-schema.md)) gives a reviewer something concrete to triage against, where most OSS finding outputs are binary yes/no. Third, Phase α intentionally stops before sandboxed exploit execution — that work ships as a separate repo (`agentic-appsec-exploit-lab`) so the kernel-share concerns of running attacker code are isolated rather than papered over ([ADR-0004](docs/adr/0004-sandbox-out-of-scope.md)). The 64/64 test-suite pass on the 3-OS CI matrix and ADR-0001 through ADR-0008 all in Accepted status are the verifiable artifacts of those three commitments.
+**What this exercise validated.** Three things turned out to be worth defending. First, the `$0/month + no credit card` constraint is not a limitation pretending to be a feature — it is a supply-chain discipline demonstration, and the customer-deployment upgrade path is wired on day one ([ADR-0008](docs/adr/0008-default-llm-choice-and-customer-deployment.md) §Customer deployment context). Second, the confidence-calibrated finding schema ([ADR-0005](docs/adr/0005-confidence-schema.md)) gives a reviewer something concrete to triage against, where most OSS finding outputs are binary yes/no. Third, Phase α intentionally stops before sandboxed exploit execution — that work ships as a separate repo (`agentic-appsec-exploit-lab`) so the kernel-share concerns of running attacker code are isolated rather than papered over ([ADR-0004](docs/adr/0004-sandbox-out-of-scope.md)). The 84/84 test-suite pass on the 3-OS CI matrix and ADR-0001 through ADR-0008 all in Accepted status are the verifiable artifacts of those three commitments.
 
 ## Status
 
 - **Phase α author self-verify**: 7/7 criteria PASS on current HEAD ([`docs/verify/phase-alpha-round-1-self-verify.md`](docs/verify/phase-alpha-round-1-self-verify.md))
-- Test suite: 64/64 PASS on 3-OS CI matrix (Ubuntu / macOS / Windows), coverage line 59.89% / branch 68.44% / function 70.23%
+- Test suite: 84/84 PASS on 3-OS CI matrix (Ubuntu / macOS / Windows), coverage line 59.89% / branch 68.44% / function 70.23%
 - ADRs: 0001–0008 all Accepted ([`docs/adr/`](docs/adr/))
 - Awaiting user-explicit promotion gate for PUBLIC flip per [`docs/adr/0006-public-flip-criteria.md`](docs/adr/0006-public-flip-criteria.md)
 - Spec status: Stage 1 Discovery + Stage 2 EARS Acceptance Criteria complete ([`docs/spec.md`](docs/spec.md))
@@ -57,7 +57,7 @@ Daybreak-style OSS replicas don't yet cover the intersection of all five:
 | Language | TypeScript (strict, ESM) | type safety, single-binary compile via `tsc` |
 | CLI framework | commander + did-you-mean | minimal deps, sysexits-compliant exit codes |
 | Schema validation | zod + ajv (+ ajv-formats) | runtime + JSON Schema validators for SARIF / VEX / threat-model |
-| Test runner | vitest (ESM native) | 64/64 PASS on 3-OS CI |
+| Test runner | vitest (ESM native) | 84/84 PASS on 3-OS CI |
 | LLM (default) | Ollama `gemma3:4b` (~3.8 GB) | local, $0/month, no credit card, no network egress |
 | LLM (optional) | `claude-code` CLI spawn | uses your own Claude Code subscription; this tool holds no API key |
 | SAST | OpenGrep (LGPL-2.1) + Bandit (Apache-2.0) | TS/JS via OpenGrep, Python via Bandit, both free-tier |
